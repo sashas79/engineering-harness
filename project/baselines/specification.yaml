@@ -1,0 +1,13 @@
+baseline:
+  id: SPEC-1.0
+  type: specification
+  status: approved
+  source_revision: initial
+  approval:
+    authority: product_owner
+    recorded_at: null
+  counts:
+    requirements: null
+    acceptance_criteria: null
+    unresolved: null
+  blocking_ambiguities: []

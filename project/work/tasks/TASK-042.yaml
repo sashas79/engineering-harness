@@ -1,0 +1,49 @@
+id: TASK-042
+title: Duplicate claim detection
+
+objective: >
+  Implement duplicate-claim detection in the claims-assessment domain.
+
+boundary:
+  type: bounded_context
+  name: claims-assessment
+
+baseline:
+  specification: SPEC-1.0
+  architecture: ARCH-1.0
+  work_policy: WORK-1.0
+
+traceability:
+  requirements:
+    - FR-017
+  acceptance_criteria:
+    - AC-017-01
+    - AC-017-02
+  architecture:
+    - ADR-004
+    - ADR-011
+  contracts:
+    - claim-api-v2
+
+scope:
+  allowed:
+    - src/claims-assessment/**
+    - tests/claims-assessment/**
+  forbidden:
+    - src/payments/**
+    - infra/**
+
+verification:
+  required:
+    - unit_tests
+    - contract_tests
+    - security_scan
+
+dependencies:
+  - TASK-017
+  - TASK-031
+
+human_gates:
+  api_change: architect
+  schema_change: architect
+  security_change: security

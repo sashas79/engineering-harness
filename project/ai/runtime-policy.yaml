@@ -1,0 +1,10 @@
+runtime_policy:
+  source: derived_from_harness_and_project_baselines
+  default_autonomy: bounded
+  independent_review: preferred
+  write_scope: task_declared_only
+  stop_on:
+    - baseline_mismatch
+    - unresolved_human_decision
+    - scope_conflict
+    - failed_required_verification

@@ -1,0 +1,27 @@
+project:
+  id: claims-platform
+  name: Claims Platform
+  type: greenfield
+
+source_specification:
+  paths:
+    - source/claims-platform-specification.docx
+
+technology:
+  backend: dotnet
+  frontend: react
+  database: postgresql
+
+repository:
+  strategy: monorepo
+
+delivery:
+  ci: github-actions
+  deployment: containers
+
+governance:
+  product_owner: product-owner
+  architecture_owner: architect
+  security_owner: security
+  engineering_owner: engineering-lead
+  release_owner: release-authority

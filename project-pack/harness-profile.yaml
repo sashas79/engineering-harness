@@ -1,0 +1,14 @@
+harness_profile:
+  harness_version: 0.1.0
+  bootstrap_workflow: project-bootstrap
+  runtime_workflow: execute-engineering-work-item
+
+controls:
+  structured_output: required
+  validation: required
+  evidence: required
+  baseline_enforcement: required
+
+project_overrides:
+  allow: explicit_only
+  path: overrides/

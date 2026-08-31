@@ -1,0 +1,18 @@
+context_policy:
+  always_include:
+    - current_work_item
+    - current_baselines
+    - relevant_acceptance_criteria
+    - relevant_boundary
+    - applicable_adrs
+    - applicable_contracts
+    - engineering_standards
+
+  retrieve:
+    source_files: dependency_and_semantic
+    tests: related
+    completed_work: relevant_only
+
+  exclude:
+    unrelated_domains: true
+    superseded_baselines: true

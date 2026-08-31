@@ -1,0 +1,30 @@
+capabilities:
+  reasoning:
+    primary: claude
+    fallback: gpt
+  implementation:
+    primary: claude-code
+    fallback: gpt-coding
+  review:
+    primary: gpt
+    fallback: claude
+  local_low_risk:
+    primary: open-webui
+
+roles:
+  specification_ingestor:
+    capability: reasoning
+  architecture_designer:
+    capability: reasoning
+  task_decomposer:
+    capability: reasoning
+  worker:
+    capability: implementation
+  verifier:
+    capability: review
+  reviewer:
+    capability: review
+
+constraints:
+  vendor_names_may_not_appear_in_workflow_logic: true
+  independent_review_preferred: true

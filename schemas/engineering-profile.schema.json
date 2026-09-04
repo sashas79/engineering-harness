@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://engineering/profile/v1",
+  "title": "engineering-profile.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile",
+    "resolution",
+    "technology",
+    "configuration",
+    "overrides"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^profile://"
+        }
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_pack_fingerprint"
+      ],
+      "properties": {
+        "project_pack_fingerprint": {
+          "$ref": "schema://common/digest/v1"
+        }
+      }
+    },
+    "technology": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+      },
+      "uniqueItems": true
+    },
+    "configuration": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "control",
+          "value"
+        ],
+        "properties": {
+          "control": {
+            "type": "string",
+            "pattern": "^control://"
+          },
+          "value": {
+            "$ref": "schema://common/json-value/v1"
+          }
+        }
+      }
+    },
+    "overrides": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+      },
+      "uniqueItems": true
+    }
+  }
+}

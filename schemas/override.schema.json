@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://project-pack/override/v1",
+  "title": "override.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "override"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "target",
+        "requested_value",
+        "rationale",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "control"
+          ],
+          "properties": {
+            "control": {
+              "type": "string",
+              "pattern": "^control://"
+            }
+          }
+        },
+        "requested_value": {
+          "$ref": "schema://common/json-value/v1"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "enum": [
+            "product_domain",
+            "architecture",
+            "security_platform",
+            "engineering",
+            "release"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://validation/evidence/v1",
+  "title": "validation-evidence.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "validation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "subject_digest",
+        "harness",
+        "engineering",
+        "controls",
+        "result",
+        "captured_at",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^VAL-(SPEC|ARCH|WORK)-[0-9]{4}$"
+        },
+        "subject_digest": {
+          "$ref": "schema://common/digest/v1"
+        },
+        "harness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+            }
+          }
+        },
+        "engineering": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_digest"
+          ],
+          "properties": {
+            "resolution_digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "controls": {
+          "type": "array",
+          "items": {
+            "$ref": "schema://validation/control-result/v1"
+          }
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "ERROR"
+          ]
+        },
+        "captured_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

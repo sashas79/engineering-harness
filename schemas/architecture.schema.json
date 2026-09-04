@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://intent/architecture/v1",
+  "title": "architecture.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "architecture"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "components",
+        "requirement_refs",
+        "adr_refs",
+        "contract_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name",
+              "responsibility",
+              "requirement_refs"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^COMP-[A-Za-z0-9._-]+$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "responsibility": {
+                "type": "string",
+                "minLength": 1
+              },
+              "requirement_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^REQ-"
+                }
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^REQ-"
+          }
+        },
+        "adr_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^ADR-"
+          }
+        },
+        "contract_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CONTRACT-"
+          }
+        }
+      }
+    }
+  }
+}

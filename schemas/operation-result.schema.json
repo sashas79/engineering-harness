@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://result/operation/v1",
+  "title": "operation-result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "operation",
+    "outcome",
+    "provenance",
+    "issues"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "inspect_project",
+        "check_repository_structure",
+        "read_provenance",
+        "check_project_pack",
+        "check_profile_resolution",
+        "check_specification",
+        "check_architecture",
+        "check_work_graph",
+        "check_baseline",
+        "check_execution_readiness",
+        "determine_bootstrap_state",
+        "determine_next_action",
+        "bootstrap_repository",
+        "ingest_specification",
+        "validate_specification",
+        "record_specification_decision",
+        "baseline_specification",
+        "derive_architecture",
+        "validate_architecture",
+        "record_architecture_decision",
+        "baseline_architecture",
+        "derive_project_ai_policy",
+        "generate_work_items",
+        "validate_work_graph",
+        "record_work_decision",
+        "baseline_work"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "INCOMPLETE",
+        "INVALID",
+        "BLOCKED",
+        "ERROR"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolution_status"
+      ],
+      "properties": {
+        "resolution_status": {
+          "type": "string",
+          "enum": [
+            "RESOLVED",
+            "NOT_RECORDED",
+            "NOT_FOUND",
+            "UNSUPPORTED",
+            "INCONSISTENT"
+          ]
+        },
+        "harness_version": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "harness_root": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "progress"
+      ],
+      "properties": {
+        "state": {
+          "$ref": "schema://lifecycle/state/v1"
+        },
+        "progress": {
+          "$ref": "schema://lifecycle/progress/v1"
+        }
+      }
+    },
+    "project_pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid",
+        "fingerprint_status",
+        "observed_fingerprint",
+        "validated_fingerprint",
+        "resolution_source_fingerprint"
+      ],
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "fingerprint_status": {
+          "type": "string",
+          "enum": [
+            "COMPUTABLE",
+            "UNCOMPUTABLE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "observed_fingerprint": {
+          "oneOf": [
+            {
+              "$ref": "schema://common/digest/v1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "validated_fingerprint": {
+          "oneOf": [
+            {
+              "$ref": "schema://common/digest/v1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution_source_fingerprint": {
+          "oneOf": [
+            {
+              "$ref": "schema://common/digest/v1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "engineering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "present",
+        "valid",
+        "current",
+        "resolution_digest"
+      ],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "current": {
+          "type": "boolean"
+        },
+        "resolution_digest": {
+          "oneOf": [
+            {
+              "$ref": "schema://common/digest/v1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "baselines": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "integrity",
+            "historical_validity",
+            "currentness",
+            "lineage_position"
+          ],
+          "properties": {
+            "integrity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "error",
+                "absent"
+              ]
+            },
+            "historical_validity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "stale",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "lineage_position": {
+              "type": "string",
+              "enum": [
+                "head",
+                "superseded",
+                "invalid",
+                "absent"
+              ]
+            }
+          }
+        },
+        "architecture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "integrity",
+            "historical_validity",
+            "currentness",
+            "lineage_position"
+          ],
+          "properties": {
+            "integrity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "error",
+                "absent"
+              ]
+            },
+            "historical_validity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "stale",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "lineage_position": {
+              "type": "string",
+              "enum": [
+                "head",
+                "superseded",
+                "invalid",
+                "absent"
+              ]
+            }
+          }
+        },
+        "work": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "integrity",
+            "historical_validity",
+            "currentness",
+            "lineage_position"
+          ],
+          "properties": {
+            "integrity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "error",
+                "absent"
+              ]
+            },
+            "historical_validity": {
+              "type": "string",
+              "enum": [
+                "valid",
+                "invalid",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "currentness": {
+              "type": "string",
+              "enum": [
+                "current",
+                "stale",
+                "indeterminate",
+                "absent"
+              ]
+            },
+            "lineage_position": {
+              "type": "string",
+              "enum": [
+                "head",
+                "superseded",
+                "invalid",
+                "absent"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ai_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "present",
+        "valid",
+        "current"
+      ],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "current": {
+          "type": "boolean"
+        }
+      }
+    },
+    "work_graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "present",
+        "valid"
+      ],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "execution_permitted": {
+      "type": "boolean"
+    },
+    "missing_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "blocking_conditions": {
+      "type": "array",
+      "items": {
+        "$ref": "schema://lifecycle/blocking-condition/v1"
+      }
+    },
+    "pending_gate": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "gate",
+            "candidate_path",
+            "candidate_digest"
+          ],
+          "properties": {
+            "gate": {
+              "type": "string",
+              "pattern": "^gate://"
+            },
+            "candidate_path": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "candidate_digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      ]
+    },
+    "next_action": {
+      "oneOf": [
+        {
+          "$ref": "schema://lifecycle/next-action/v1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "schema://common/evidence-reference/v1"
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "schema://common/issue/v1"
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/bootstrap-workflow/v1",
+  "title": "bootstrap-workflow.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow",
+    "states",
+    "transitions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "const": "workflow://bootstrap"
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "schema://lifecycle/state/v1"
+      },
+      "uniqueItems": true
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "action",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "$ref": "schema://lifecycle/state/v1"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "complete_project_pack",
+              "correct_project_pack",
+              "bootstrap_repository",
+              "ingest_specification",
+              "validate_specification",
+              "correct_specification",
+              "record_specification_decision",
+              "baseline_specification",
+              "derive_architecture",
+              "validate_architecture",
+              "correct_architecture",
+              "record_architecture_decision",
+              "baseline_architecture",
+              "derive_project_ai_policy",
+              "generate_work_items",
+              "validate_work_graph",
+              "correct_work_decomposition",
+              "record_work_decision",
+              "baseline_work",
+              "resolve_blocker",
+              "none_bootstrap_complete"
+            ]
+          },
+          "to": {
+            "$ref": "schema://lifecycle/state/v1"
+          },
+          "gate": {
+            "type": "string",
+            "pattern": "^gate://"
+          }
+        }
+      }
+    }
+  }
+}

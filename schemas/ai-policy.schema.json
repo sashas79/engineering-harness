@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://project-state/ai-policy/v1",
+  "title": "ai-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ai_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "ai_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "controls",
+        "provenance",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "controls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "control"
+            ],
+            "properties": {
+              "control": {
+                "type": "string",
+                "pattern": "^control://"
+              },
+              "value": {
+                "$ref": "schema://common/json-value/v1"
+              }
+            }
+          }
+        },
+        "provenance": {
+          "$ref": "schema://project-state/ai-policy-provenance/v1"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

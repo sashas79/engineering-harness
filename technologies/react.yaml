@@ -1,0 +1,5 @@
+schema_version: 1
+technology:
+  id: technology://react
+standards: []
+validations: []

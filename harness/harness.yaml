@@ -1,37 +1,9 @@
+schema_version: 1
 harness:
-  id: engineering-harness
-  version: 0.1.0
-
-execution:
-  require_structured_output: true
-  persist_intermediate_outputs: true
-  validate_against_schema: true
-  fail_closed: true
-  record_evidence: true
-  immutable_execution_records: true
-
-bootstrap_stages:
-  - bootstrap_repository
-  - ingest_specification
-  - validate_specification
-  - derive_architecture
-  - validate_architecture
-  - derive_project_ai_policy
-  - generate_work_items
-  - validate_work_graph
-  - baseline_work
-
-runtime:
-  task_loop:
-    - plan
-    - build_context
-    - execute
-    - verify
-    - review
-  rework_on_verification_failure: true
-  rework_on_review_failure: true
-
-baseline_policy:
-  specification_required_before_architecture: true
-  architecture_required_before_work_generation: true
-  work_baseline_required_before_execution: true
+  version: v0.3.0
+  bootstrap_workflow: workflow://bootstrap
+  schemas: schemas/schema-catalog.json
+  profiles: profiles
+  technologies: technologies
+  controls: controls
+  gates: gates

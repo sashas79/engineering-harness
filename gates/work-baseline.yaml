@@ -1,0 +1,5 @@
+schema_version: 1
+gate:
+  id: gate://work-baseline
+  authority: engineering
+  required: true

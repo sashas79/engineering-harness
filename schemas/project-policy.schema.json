@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://project-pack/project-policy/v1",
+  "title": "project-policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "configuration"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "configuration": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "control",
+          "value"
+        ],
+        "properties": {
+          "control": {
+            "type": "string",
+            "pattern": "^control://"
+          },
+          "value": {
+            "$ref": "schema://common/json-value/v1"
+          }
+        }
+      }
+    }
+  }
+}

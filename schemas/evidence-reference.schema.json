@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://common/evidence-reference/v1",
+  "title": "evidence-reference.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "path",
+    "digest"
+  ],
+  "properties": {
+    "path": {
+      "$ref": "schema://common/repository-path/v1"
+    },
+    "digest": {
+      "$ref": "schema://common/digest/v1"
+    }
+  }
+}

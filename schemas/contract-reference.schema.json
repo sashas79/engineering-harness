@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://intent/contract-reference/v1",
+  "title": "contract-reference.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "type",
+        "requirement_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CONTRACT-[A-Za-z0-9._-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "api",
+            "event",
+            "data",
+            "integration",
+            "other"
+          ]
+        },
+        "path": {
+          "$ref": "schema://common/repository-path/v1"
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^REQ-"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "schemas": [
+    {
+      "id": "schema://approval/baseline/v1",
+      "path": "baseline.schema.json"
+    },
+    {
+      "id": "schema://approval/candidate/v1",
+      "path": "approval-candidate.schema.json"
+    },
+    {
+      "id": "schema://approval/decision/v1",
+      "path": "human-decision.schema.json"
+    },
+    {
+      "id": "schema://common/canonicalisation-version/v1",
+      "path": "canonicalisation-version.schema.json"
+    },
+    {
+      "id": "schema://common/digest/v1",
+      "path": "digest.schema.json"
+    },
+    {
+      "id": "schema://common/evidence-reference/v1",
+      "path": "evidence-reference.schema.json"
+    },
+    {
+      "id": "schema://common/harness-reference/v1",
+      "path": "harness-reference.schema.json"
+    },
+    {
+      "id": "schema://common/issue/v1",
+      "path": "issue.schema.json"
+    },
+    {
+      "id": "schema://common/json-value/v1",
+      "path": "json-value.schema.json"
+    },
+    {
+      "id": "schema://common/repository-path/v1",
+      "path": "repository-path.schema.json"
+    },
+    {
+      "id": "schema://common/timestamp/v1",
+      "path": "timestamp.schema.json"
+    },
+    {
+      "id": "schema://engineering/controls/v1",
+      "path": "engineering-controls.schema.json"
+    },
+    {
+      "id": "schema://engineering/harness/v1",
+      "path": "engineering-harness.schema.json"
+    },
+    {
+      "id": "schema://engineering/profile/v1",
+      "path": "engineering-profile.schema.json"
+    },
+    {
+      "id": "schema://harness/control/v1",
+      "path": "control.schema.json"
+    },
+    {
+      "id": "schema://harness/human-gate/v1",
+      "path": "human-gate.schema.json"
+    },
+    {
+      "id": "schema://harness/profile/v1",
+      "path": "profile.schema.json"
+    },
+    {
+      "id": "schema://harness/release/v1",
+      "path": "harness-release.schema.json"
+    },
+    {
+      "id": "schema://harness/technology/v1",
+      "path": "technology.schema.json"
+    },
+    {
+      "id": "schema://intent/acceptance-criterion/v1",
+      "path": "acceptance-criterion.schema.json"
+    },
+    {
+      "id": "schema://intent/adr/v1",
+      "path": "adr.schema.json"
+    },
+    {
+      "id": "schema://intent/architecture/v1",
+      "path": "architecture.schema.json"
+    },
+    {
+      "id": "schema://intent/contract-reference/v1",
+      "path": "contract-reference.schema.json"
+    },
+    {
+      "id": "schema://intent/requirement/v1",
+      "path": "requirement.schema.json"
+    },
+    {
+      "id": "schema://intent/specification/v1",
+      "path": "specification.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/blocking-condition/v1",
+      "path": "blocking-condition.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/bootstrap-workflow/v1",
+      "path": "bootstrap-workflow.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/next-action/v1",
+      "path": "next-action.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/progress/v1",
+      "path": "progress.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/state/v1",
+      "path": "lifecycle-state.schema.json"
+    },
+    {
+      "id": "schema://project-pack/fingerprint-subject/v1",
+      "path": "project-pack-fingerprint-subject.schema.json"
+    },
+    {
+      "id": "schema://project-pack/harness-profile/v1",
+      "path": "harness-profile-selection.schema.json"
+    },
+    {
+      "id": "schema://project-pack/override/v1",
+      "path": "override.schema.json"
+    },
+    {
+      "id": "schema://project-pack/project-policy/v1",
+      "path": "project-policy.schema.json"
+    },
+    {
+      "id": "schema://project-pack/project/v1",
+      "path": "project.schema.json"
+    },
+    {
+      "id": "schema://project-pack/source-manifest/v1",
+      "path": "source-manifest.schema.json"
+    },
+    {
+      "id": "schema://project-state/ai-policy-provenance/v1",
+      "path": "ai-policy-provenance.schema.json"
+    },
+    {
+      "id": "schema://project-state/ai-policy/v1",
+      "path": "ai-policy.schema.json"
+    },
+    {
+      "id": "schema://provenance/adapter/v1",
+      "path": "adapter-provenance.schema.json"
+    },
+    {
+      "id": "schema://provenance/distribution/v1",
+      "path": "distribution-provenance.schema.json"
+    },
+    {
+      "id": "schema://provenance/resolved/v1",
+      "path": "resolved-provenance.schema.json"
+    },
+    {
+      "id": "schema://result/operation/v1",
+      "path": "operation-result.schema.json"
+    },
+    {
+      "id": "schema://runtime/evidence-envelope/v1",
+      "path": "evidence-envelope.schema.json"
+    },
+    {
+      "id": "schema://validation/control-result/v1",
+      "path": "control-result.schema.json"
+    },
+    {
+      "id": "schema://validation/evidence/v1",
+      "path": "validation-evidence.schema.json"
+    },
+    {
+      "id": "schema://validation/subject/v1",
+      "path": "validation-subject.schema.json"
+    },
+    {
+      "id": "schema://work/execution-graph/v1",
+      "path": "execution-graph.schema.json"
+    },
+    {
+      "id": "schema://work/item/v1",
+      "path": "work-item.schema.json"
+    },
+    {
+      "id": "schema://work/repository-scope/v1",
+      "path": "repository-scope.schema.json"
+    }
+  ]
+}

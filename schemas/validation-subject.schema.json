@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://validation/subject/v1",
+  "title": "validation-subject.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "validation_subject"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "validation_subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "harness",
+        "engineering",
+        "upstream",
+        "artifacts",
+        "binding"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "specification",
+            "architecture",
+            "work"
+          ]
+        },
+        "harness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+            }
+          }
+        },
+        "engineering": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_digest"
+          ],
+          "properties": {
+            "resolution_digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "project_pack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fingerprint"
+          ],
+          "properties": {
+            "fingerprint": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "upstream": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "baseline_id",
+              "digest"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "specification",
+                  "architecture",
+                  "work"
+                ]
+              },
+              "baseline_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              }
+            }
+          }
+        },
+        "ai_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "path": {
+              "const": "ai/policy.yaml"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "path": {
+                "$ref": "schema://common/repository-path/v1"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "specification"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "project_pack"
+            ],
+            "properties": {
+              "upstream": {
+                "maxItems": 0
+              }
+            },
+            "not": {
+              "required": [
+                "ai_policy"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "architecture"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "upstream": {
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "type",
+                        "baseline_id",
+                        "digest"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "specification",
+                            "architecture",
+                            "work"
+                          ]
+                        },
+                        "baseline_id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                        },
+                        "digest": {
+                          "$ref": "schema://common/digest/v1"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "type": {
+                          "const": "specification"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "project_pack"
+                  ]
+                },
+                {
+                  "required": [
+                    "ai_policy"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "work"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ai_policy"
+            ],
+            "properties": {
+              "upstream": {
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "type",
+                        "baseline_id",
+                        "digest"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "specification",
+                            "architecture",
+                            "work"
+                          ]
+                        },
+                        "baseline_id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                        },
+                        "digest": {
+                          "$ref": "schema://common/digest/v1"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "type": {
+                          "const": "architecture"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "not": {
+              "required": [
+                "project_pack"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

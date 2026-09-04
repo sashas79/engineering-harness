@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://project-pack/source-manifest/v1",
+  "title": "source-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "path",
+          "role",
+          "media_type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+          },
+          "path": {
+            "$ref": "schema://common/repository-path/v1"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "authoritative",
+              "supporting"
+            ]
+          },
+          "media_type": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9!#$&^_.+\\-]+/[A-Za-z0-9!#$&^_.+\\-]+(?:\\s*;.*)?$"
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

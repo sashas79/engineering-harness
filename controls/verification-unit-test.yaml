@@ -1,0 +1,11 @@
+schema_version: 1
+control:
+  id: control://verification/unit-test
+  type: validation
+  project_configuration:
+    permitted: false
+    schema: null
+  override:
+    permitted: false
+    approval_required: false
+    authority: null

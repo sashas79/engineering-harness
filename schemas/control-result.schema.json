@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://validation/control-result/v1",
+  "title": "control-result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "control",
+    "result",
+    "issues"
+  ],
+  "properties": {
+    "control": {
+      "type": "string",
+      "pattern": "^control://"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "ERROR"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "schema://common/issue/v1"
+      }
+    }
+  }
+}

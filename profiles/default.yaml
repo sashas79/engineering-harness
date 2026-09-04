@@ -1,0 +1,6 @@
+schema_version: 1
+profile:
+  id: profile://default
+controls:
+  - control://verification/build
+  - control://verification/unit-test

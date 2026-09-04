@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://common/json-value/v1",
+  "title": "Canonical JSON-compatible value",
+  "oneOf": [
+    {
+      "type": "string"
+    },
+    {
+      "type": "boolean"
+    },
+    {
+      "type": "null"
+    },
+    {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "schema://common/json-value/v1"
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "schema://common/json-value/v1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://work/repository-scope/v1",
+  "title": "repository-scope.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "allowed",
+    "forbidden"
+  ],
+  "properties": {
+    "allowed": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\x00-\\x1F]+$"
+      },
+      "minItems": 1
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\x00-\\x1F]+$"
+      }
+    }
+  }
+}

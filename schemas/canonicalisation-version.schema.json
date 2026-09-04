@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://common/canonicalisation-version/v1",
+  "title": "canonicalisation-version.schema.json",
+  "type": "string",
+  "const": "harness-v1"
+}

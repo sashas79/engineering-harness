@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/control/v1",
+  "title": "control.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "control"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "project_configuration",
+        "override"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^control://"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "policy",
+            "standard",
+            "validation",
+            "evidence",
+            "gate"
+          ]
+        },
+        "project_configuration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "permitted"
+          ],
+          "properties": {
+            "permitted": {
+              "type": "boolean"
+            },
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^schema://"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "override": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "permitted",
+            "approval_required"
+          ],
+          "properties": {
+            "permitted": {
+              "type": "boolean"
+            },
+            "approval_required": {
+              "type": "boolean"
+            },
+            "authority": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "product_domain",
+                    "architecture",
+                    "security_platform",
+                    "engineering",
+                    "release"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

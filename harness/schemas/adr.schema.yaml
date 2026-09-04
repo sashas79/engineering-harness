@@ -1,4 +1,0 @@
-$schema: "https://json-schema.org/draft/2020-12/schema"
-title: Adr schema placeholder
-description: Organisation-approved schema to be completed before production use.
-type: object

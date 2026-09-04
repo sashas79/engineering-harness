@@ -1,0 +1,5 @@
+schema_version: 1
+gate:
+  id: gate://specification-baseline
+  authority: product_domain
+  required: true

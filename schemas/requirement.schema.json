@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://intent/requirement/v1",
+  "title": "requirement.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "statement",
+    "source_refs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^REQ-[A-Za-z0-9._-]+$"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}

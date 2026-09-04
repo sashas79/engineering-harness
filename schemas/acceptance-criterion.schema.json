@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://intent/acceptance-criterion/v1",
+  "title": "acceptance-criterion.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "requirement_id",
+    "statement"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^AC-[A-Za-z0-9._-]+$"
+    },
+    "requirement_id": {
+      "type": "string",
+      "pattern": "^REQ-[A-Za-z0-9._-]+$"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

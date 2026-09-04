@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/state/v1",
+  "title": "lifecycle-state.schema.json",
+  "type": "string",
+  "enum": [
+    "PROJECT_INPUT_REQUIRED",
+    "PROJECT_INPUT_READY",
+    "REPOSITORY_INITIALISED",
+    "SPECIFICATION_IN_PROGRESS",
+    "AWAITING_SPECIFICATION_APPROVAL",
+    "SPECIFICATION_APPROVED",
+    "SPECIFICATION_BASELINED",
+    "ARCHITECTURE_IN_PROGRESS",
+    "AWAITING_ARCHITECTURE_APPROVAL",
+    "ARCHITECTURE_APPROVED",
+    "ARCHITECTURE_BASELINED",
+    "WORK_DECOMPOSITION_IN_PROGRESS",
+    "AWAITING_WORK_APPROVAL",
+    "WORK_APPROVED",
+    "WORK_BASELINED",
+    "EXECUTION_READY"
+  ]
+}

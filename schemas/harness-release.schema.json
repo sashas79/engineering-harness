@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/release/v1",
+  "title": "harness-release.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "harness"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "bootstrap_workflow",
+        "schemas",
+        "profiles",
+        "technologies",
+        "controls",
+        "gates"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+        },
+        "bootstrap_workflow": {
+          "type": "string",
+          "pattern": "^workflow://"
+        },
+        "schemas": {
+          "const": "schemas/schema-catalog.json"
+        },
+        "profiles": {
+          "$ref": "schema://common/repository-path/v1"
+        },
+        "technologies": {
+          "$ref": "schema://common/repository-path/v1"
+        },
+        "controls": {
+          "$ref": "schema://common/repository-path/v1"
+        },
+        "gates": {
+          "$ref": "schema://common/repository-path/v1"
+        }
+      }
+    }
+  }
+}

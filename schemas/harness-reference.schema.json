@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://common/harness-reference/v1",
+  "title": "harness-reference.schema.json",
+  "type": "string",
+  "pattern": "^(schema|profile|technology|control|gate|workflow)://[A-Za-z0-9._~!$&'()*+,;=:@/\\-]+$"
+}

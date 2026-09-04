@@ -1,0 +1,8 @@
+schema_version: 1
+# Human/project-owned input.
+# Add at least one authoritative source and place the declared file under this directory.
+# sources:
+#   - id: SOURCE-001
+#     path: requirements.md
+#     role: authoritative
+#     media_type: text/markdown

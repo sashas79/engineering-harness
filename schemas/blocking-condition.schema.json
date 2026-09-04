@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/blocking-condition/v1",
+  "title": "blocking-condition.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "code",
+    "message"
+  ],
+  "properties": {
+    "code": {
+      "type": "string",
+      "enum": [
+        "PROV_NOT_RECORDED",
+        "PROV_NOT_FOUND",
+        "PROV_UNSUPPORTED",
+        "PROV_INCONSISTENT",
+        "REPO_REQUIRED_PATH_MISSING",
+        "REPO_WRONG_OBJECT_TYPE",
+        "REPO_PATH_ESCAPE",
+        "REPO_FORBIDDEN_SYMLINK",
+        "REPO_INCONSISTENT_STATE",
+        "PACK_REQUIRED_INPUT_MISSING",
+        "PACK_PARSE_ERROR",
+        "PACK_SCHEMA_INVALID",
+        "PACK_SOURCE_UNDECLARED",
+        "PACK_SOURCE_NOT_FOUND",
+        "PACK_FINGERPRINT_UNCOMPUTABLE",
+        "PROFILE_UNKNOWN",
+        "TECHNOLOGY_UNKNOWN",
+        "CONTROL_UNKNOWN",
+        "CONTROL_CONFIG_NOT_PERMITTED",
+        "CONTROL_OVERRIDE_NOT_PERMITTED",
+        "CONTROL_OVERRIDE_APPROVAL_UNSUPPORTED",
+        "CONTROL_CONFLICT",
+        "CANONICALISATION_UNSUPPORTED",
+        "CANONICALISATION_KEY_COLLISION",
+        "YAML_UNSUPPORTED_FEATURE",
+        "DIGEST_INVALID",
+        "DIGEST_MISMATCH",
+        "VALIDATION_FAILED",
+        "VALIDATION_ERROR",
+        "VALIDATION_SUBJECT_CHANGED",
+        "VALIDATION_EVIDENCE_INVALID",
+        "APPROVAL_MISSING",
+        "APPROVAL_WRONG_CANDIDATE",
+        "APPROVAL_WRONG_AUTHORITY",
+        "APPROVAL_IDENTITY_ASSURANCE_INVALID",
+        "APPROVAL_DECISION_ALREADY_RECORDED",
+        "APPROVAL_CANDIDATE_REJECTED",
+        "BASELINE_INTEGRITY_FAILURE",
+        "BASELINE_UPSTREAM_STALE",
+        "BASELINE_MULTIPLE_HEADS",
+        "BASELINE_CYCLE",
+        "BASELINE_CROSS_TYPE_SUPERSESSION",
+        "BASELINE_PREDECESSOR_MISSING",
+        "AI_POLICY_INVALID",
+        "AI_POLICY_STALE",
+        "AI_POLICY_WRONG_ARCHITECTURE",
+        "WORK_TASK_DUPLICATE",
+        "WORK_REFERENCE_INVALID",
+        "WORK_DEPENDENCY_MISSING",
+        "WORK_GRAPH_CYCLE",
+        "WORK_SCOPE_ESCAPE",
+        "WORK_COVERAGE_INCOMPLETE",
+        "MUTATION_LOCKED",
+        "RECORD_ALREADY_EXISTS",
+        "MUTATION_PRECONDITION_CHANGED",
+        "ATOMIC_WRITE_FAILED"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "location": {
+      "$ref": "schema://common/repository-path/v1"
+    }
+  }
+}

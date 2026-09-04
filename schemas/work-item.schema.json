@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://work/item/v1",
+  "title": "work-item.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "work_item"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "work_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "requirement_refs",
+        "acceptance_refs",
+        "architecture_refs",
+        "contract_refs",
+        "dependencies",
+        "repository_scope",
+        "verification_controls",
+        "human_gates"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^TASK-[A-Za-z0-9._-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^REQ-"
+          },
+          "minItems": 1
+        },
+        "acceptance_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^AC-"
+          },
+          "minItems": 1
+        },
+        "architecture_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "contract_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CONTRACT-"
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TASK-"
+          }
+        },
+        "repository_scope": {
+          "$ref": "schema://work/repository-scope/v1"
+        },
+        "verification_controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^control://"
+          },
+          "minItems": 1
+        },
+        "human_gates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^gate://"
+          }
+        }
+      }
+    }
+  }
+}

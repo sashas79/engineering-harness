@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://engineering/harness/v1",
+  "title": "engineering-harness.schema.json",
+  "$ref": "schema://provenance/resolved/v1"
+}

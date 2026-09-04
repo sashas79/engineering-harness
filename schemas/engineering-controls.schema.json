@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://engineering/controls/v1",
+  "title": "engineering-controls.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "controls",
+    "binding"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "source",
+          "origin"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^control://"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "policy",
+              "standard",
+              "validation",
+              "evidence",
+              "gate"
+            ]
+          },
+          "source": {
+            "$ref": "schema://common/harness-reference/v1"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "harness",
+              "profile",
+              "technology",
+              "project_configuration",
+              "override"
+            ]
+          },
+          "configuration": {
+            "$ref": "schema://common/json-value/v1"
+          },
+          "override_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+          }
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "canonicalisation",
+        "digest"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "canonicalisation": {
+          "const": "harness-v1"
+        },
+        "digest": {
+          "$ref": "schema://common/digest/v1"
+        }
+      }
+    }
+  }
+}

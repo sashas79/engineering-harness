@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/profile/v1",
+  "title": "profile.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile",
+    "controls"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^profile://"
+        }
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^control://"
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/human-gate/v1",
+  "title": "human-gate.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "gate"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "authority",
+        "required"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^gate://"
+        },
+        "authority": {
+          "type": "string",
+          "enum": [
+            "product_domain",
+            "architecture",
+            "security_platform",
+            "engineering",
+            "release"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

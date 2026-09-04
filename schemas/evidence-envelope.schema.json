@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://runtime/evidence-envelope/v1",
+  "title": "evidence-envelope.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "created_at",
+        "operation",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "inspect_project",
+            "check_repository_structure",
+            "read_provenance",
+            "check_project_pack",
+            "check_profile_resolution",
+            "check_specification",
+            "check_architecture",
+            "check_work_graph",
+            "check_baseline",
+            "check_execution_readiness",
+            "determine_bootstrap_state",
+            "determine_next_action",
+            "bootstrap_repository",
+            "ingest_specification",
+            "validate_specification",
+            "record_specification_decision",
+            "baseline_specification",
+            "derive_architecture",
+            "validate_architecture",
+            "record_architecture_decision",
+            "baseline_architecture",
+            "derive_project_ai_policy",
+            "generate_work_items",
+            "validate_work_graph",
+            "record_work_decision",
+            "baseline_work"
+          ]
+        },
+        "subject_digest": {
+          "$ref": "schema://common/digest/v1"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

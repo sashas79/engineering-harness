@@ -1,0 +1,84 @@
+schema_version: 1
+workflow:
+  id: workflow://bootstrap
+states:
+  - PROJECT_INPUT_REQUIRED
+  - PROJECT_INPUT_READY
+  - REPOSITORY_INITIALISED
+  - SPECIFICATION_IN_PROGRESS
+  - AWAITING_SPECIFICATION_APPROVAL
+  - SPECIFICATION_APPROVED
+  - SPECIFICATION_BASELINED
+  - ARCHITECTURE_IN_PROGRESS
+  - AWAITING_ARCHITECTURE_APPROVAL
+  - ARCHITECTURE_APPROVED
+  - ARCHITECTURE_BASELINED
+  - WORK_DECOMPOSITION_IN_PROGRESS
+  - AWAITING_WORK_APPROVAL
+  - WORK_APPROVED
+  - WORK_BASELINED
+  - EXECUTION_READY
+transitions:
+  - from: PROJECT_INPUT_REQUIRED
+    action: complete_project_pack
+    to: PROJECT_INPUT_READY
+  - from: PROJECT_INPUT_REQUIRED
+    action: correct_project_pack
+    to: PROJECT_INPUT_READY
+  - from: PROJECT_INPUT_READY
+    action: bootstrap_repository
+    to: REPOSITORY_INITIALISED
+  - from: REPOSITORY_INITIALISED
+    action: ingest_specification
+    to: SPECIFICATION_IN_PROGRESS
+  - from: SPECIFICATION_IN_PROGRESS
+    action: validate_specification
+    to: AWAITING_SPECIFICATION_APPROVAL
+  - from: SPECIFICATION_IN_PROGRESS
+    action: correct_specification
+    to: SPECIFICATION_IN_PROGRESS
+  - from: AWAITING_SPECIFICATION_APPROVAL
+    action: record_specification_decision
+    to: SPECIFICATION_APPROVED
+    gate: gate://specification-baseline
+  - from: SPECIFICATION_APPROVED
+    action: baseline_specification
+    to: SPECIFICATION_BASELINED
+  - from: SPECIFICATION_BASELINED
+    action: derive_architecture
+    to: ARCHITECTURE_IN_PROGRESS
+  - from: ARCHITECTURE_IN_PROGRESS
+    action: validate_architecture
+    to: AWAITING_ARCHITECTURE_APPROVAL
+  - from: ARCHITECTURE_IN_PROGRESS
+    action: correct_architecture
+    to: ARCHITECTURE_IN_PROGRESS
+  - from: AWAITING_ARCHITECTURE_APPROVAL
+    action: record_architecture_decision
+    to: ARCHITECTURE_APPROVED
+    gate: gate://architecture-baseline
+  - from: ARCHITECTURE_APPROVED
+    action: baseline_architecture
+    to: ARCHITECTURE_BASELINED
+  - from: ARCHITECTURE_BASELINED
+    action: derive_project_ai_policy
+    to: ARCHITECTURE_BASELINED
+  - from: ARCHITECTURE_BASELINED
+    action: generate_work_items
+    to: WORK_DECOMPOSITION_IN_PROGRESS
+  - from: WORK_DECOMPOSITION_IN_PROGRESS
+    action: validate_work_graph
+    to: AWAITING_WORK_APPROVAL
+  - from: WORK_DECOMPOSITION_IN_PROGRESS
+    action: correct_work_decomposition
+    to: WORK_DECOMPOSITION_IN_PROGRESS
+  - from: AWAITING_WORK_APPROVAL
+    action: record_work_decision
+    to: WORK_APPROVED
+    gate: gate://work-baseline
+  - from: WORK_APPROVED
+    action: baseline_work
+    to: WORK_BASELINED
+  - from: WORK_BASELINED
+    action: resolve_blocker
+    to: WORK_BASELINED

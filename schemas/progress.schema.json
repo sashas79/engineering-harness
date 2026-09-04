@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/progress/v1",
+  "title": "progress.schema.json",
+  "type": "string",
+  "enum": [
+    "ready",
+    "blocked"
+  ]
+}

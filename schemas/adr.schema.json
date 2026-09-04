@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://intent/adr/v1",
+  "title": "adr.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "adr"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "adr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "status",
+        "decision",
+        "rationale",
+        "requirement_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ADR-[A-Za-z0-9._-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "accepted",
+            "superseded"
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^REQ-"
+          }
+        }
+      }
+    }
+  }
+}

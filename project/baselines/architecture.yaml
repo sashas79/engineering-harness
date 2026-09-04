@@ -1,9 +1,0 @@
-baseline:
-  id: ARCH-1.0
-  type: architecture
-  status: approved
-  based_on: SPEC-1.0
-  approval:
-    authority: architect
-    recorded_at: null
-  unresolved_decisions: []

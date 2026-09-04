@@ -1,0 +1,5 @@
+schema_version: 1
+gate:
+  id: gate://architecture-baseline
+  authority: architecture
+  required: true

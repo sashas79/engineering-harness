@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/technology/v1",
+  "title": "technology.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "technology",
+    "standards",
+    "validations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "technology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^technology://"
+        }
+      }
+    },
+    "standards": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^control://"
+      },
+      "uniqueItems": true
+    },
+    "validations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^control://"
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,5 @@
+schema_version: 1
+# Human/project-owned input.
+# Select exactly one recognised profile, for example:
+# harness_profile:
+#   id: default

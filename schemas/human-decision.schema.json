@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://approval/decision/v1",
+  "title": "human-decision.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "approval"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gate",
+        "decision",
+        "candidate",
+        "approver",
+        "identity_assurance",
+        "captured_at",
+        "captured_via",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^APR-(SPEC|ARCH|WORK)-[0-9]{4}$"
+        },
+        "gate": {
+          "type": "string",
+          "pattern": "^gate://"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "rejected"
+          ]
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "manifest",
+            "digest"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "specification",
+                "architecture",
+                "work"
+              ]
+            },
+            "manifest": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "approver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "authority"
+          ],
+          "properties": {
+            "identity": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+            },
+            "authority": {
+              "type": "string",
+              "enum": [
+                "product_domain",
+                "architecture",
+                "security_platform",
+                "engineering",
+                "release"
+              ]
+            }
+          }
+        },
+        "identity_assurance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mechanism",
+            "level"
+          ],
+          "properties": {
+            "mechanism": {
+              "const": "declared-project-identity"
+            },
+            "level": {
+              "const": "declared"
+            }
+          }
+        },
+        "captured_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "captured_via": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interface"
+          ],
+          "properties": {
+            "interface": {
+              "type": "string",
+              "enum": [
+                "cli",
+                "ci",
+                "adapter",
+                "library"
+              ]
+            },
+            "adapter": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "const": "adapter"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "adapter"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "enum": [
+                      "cli",
+                      "ci",
+                      "library"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "adapter": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "comment": {
+          "type": "string"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

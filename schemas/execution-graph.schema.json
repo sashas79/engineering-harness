@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://work/execution-graph/v1",
+  "title": "execution-graph.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution_graph"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "execution_graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tasks"
+      ],
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "depends_on"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^TASK-"
+              },
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^TASK-"
+                }
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

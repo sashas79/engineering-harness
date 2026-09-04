@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/next-action/v1",
+  "title": "next-action.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "action"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": [
+        "HARNESS_OPERATION",
+        "HUMAN_INPUT",
+        "HUMAN_DECISION",
+        "REWORK",
+        "NO_ACTION"
+      ]
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "complete_project_pack",
+        "correct_project_pack",
+        "bootstrap_repository",
+        "ingest_specification",
+        "validate_specification",
+        "correct_specification",
+        "record_specification_decision",
+        "baseline_specification",
+        "derive_architecture",
+        "validate_architecture",
+        "correct_architecture",
+        "record_architecture_decision",
+        "baseline_architecture",
+        "derive_project_ai_policy",
+        "generate_work_items",
+        "validate_work_graph",
+        "correct_work_decomposition",
+        "record_work_decision",
+        "baseline_work",
+        "resolve_blocker",
+        "none_bootstrap_complete"
+      ]
+    }
+  }
+}

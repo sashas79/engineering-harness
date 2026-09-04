@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://project-state/ai-policy-provenance/v1",
+  "title": "ai-policy-provenance.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "architecture_baseline",
+    "engineering_resolution_digest"
+  ],
+  "properties": {
+    "architecture_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "digest",
+        "candidate_digest"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ARCH-[0-9]{4}$"
+        },
+        "digest": {
+          "$ref": "schema://common/digest/v1"
+        },
+        "candidate_digest": {
+          "$ref": "schema://common/digest/v1"
+        }
+      }
+    },
+    "engineering_resolution_digest": {
+      "$ref": "schema://common/digest/v1"
+    }
+  }
+}

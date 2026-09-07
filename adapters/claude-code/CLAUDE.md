@@ -12,10 +12,21 @@ The deterministic Engineering Harness core is authoritative for deterministic re
 - `/baselines/**` and governed `/evidence/**` records are append-only under Harness semantics.
 - Human approval decisions must be explicit and captured through the Harness decision mechanism.
 
+## Configuration
+
+`init` records how to reach the Harness in `.claude/settings.json`:
+
+- `ENGINEERING_HARNESS_CORE` — the core command, run from the project root (for example `../harness-core`).
+- `ENGINEERING_HARNESS_ROOT` — the Harness root holding the installed releases (for example `../_root`).
+
+Use those values. Never guess a core command or a Harness root, and never download or select a release yourself.
+
 ## Bootstrap
 
 Use `/bootstrap status` to obtain deterministic status through the configured Harness core.
 Use `/bootstrap` only to perform the next operation that the core reports as permitted.
+
+On a freshly initialised project the first permitted step is completing `project-pack/` from `project-pack/PROJECT-PACK-BRIEF.md`, which is the operator's explicit written instruction. `/bootstrap` does that, stops at `PROJECT_INPUT_READY`, and leaves the decision to run `bootstrap_repository` to the operator.
 
 Do not implement a second state machine in this file or in Claude reasoning.
 Do not begin Engineering Work Item execution merely because bootstrap is complete; runtime execution is a separate controlled workflow.

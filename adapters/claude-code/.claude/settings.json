@@ -1,0 +1,9 @@
+{
+  "env": {
+    "ENGINEERING_HARNESS_ROOT": "{{harness_root}}",
+    "ENGINEERING_HARNESS_CORE": "{{harness_core}}"
+  },
+  "permissions": {
+    "allow": ["Bash({{harness_core}}:*)"]
+  }
+}

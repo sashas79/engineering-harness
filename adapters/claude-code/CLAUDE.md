@@ -28,5 +28,7 @@ Use `/bootstrap` only to perform the next operation that the core reports as per
 
 On a freshly initialised project the first permitted step is completing `project-pack/` from `project-pack/PROJECT-PACK-BRIEF.md`, which is the operator's explicit written instruction. `/bootstrap` does that, stops at `PROJECT_INPUT_READY`, and leaves the decision to run `bootstrap_repository` to the operator.
 
+For the AI-assisted operations (`ingest_specification`, `derive_architecture`, `derive_project_ai_policy`, `generate_work_items`) `/bootstrap` authors the input document from the Pack's sources and any baselined predecessor and hands it to the core; the core alone validates it and writes it into the repository. Human decisions (`record_*_decision`) are never made by the adapter.
+
 Do not implement a second state machine in this file or in Claude reasoning.
 Do not begin Engineering Work Item execution merely because bootstrap is complete; runtime execution is a separate controlled workflow.

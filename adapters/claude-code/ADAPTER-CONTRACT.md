@@ -6,7 +6,7 @@ The Claude Code adapter is a presentation/execution adapter to the Engineering H
 
 - Use the deterministic Harness core for repository inspection and deterministic lifecycle decisions.
 - Treat `/project-pack/**` as human/project-owned and never silently modify it. The only permitted write is completing the Pack from `project-pack/PROJECT-PACK-BRIEF.md`, the operator's explicit written instruction, while the core reports `PROJECT_INPUT_REQUIRED`; the adapter stops at `PROJECT_INPUT_READY`.
-- Perform AI-assisted lifecycle operations only when the core reports them as the next permitted operation.
+- Perform AI-assisted lifecycle operations (`ingest_specification`, `derive_architecture`, `derive_project_ai_policy`, `generate_work_items`) only when the core reports them as the next permitted operation; for those operations the adapter authors the input document from the Pack's sources, passes it to the core, and never writes governed documents directly.
 - Stop for explicit human decisions when the core reports a `HUMAN_DECISION` next action.
 - Never infer approval, currentness, or readiness.
 - Use the explicit Harness root supplied by the developer environment; do not download or select another Harness release during project inspection.

@@ -1,0 +1,11 @@
+{
+  "chat.promptFiles": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.tools.terminal.autoApprove": {
+    "{{harness_core}}": true,
+    "/\\b(approve_pending|reject_pending|record_specification_decision|record_architecture_decision|record_work_decision)\\b/": {
+      "approve": false,
+      "matchCommandLine": true
+    }
+  }
+}

@@ -1,12 +1,14 @@
 ---
+name: bootstrap
 description: Report or progress the project through the deterministic Engineering Harness bootstrap lifecycle
+agent: agent
 argument-hint: "[status]"
 ---
 
-Act only as the Claude Code adapter to the deterministic Engineering Harness core.
+Act only as the GitHub Copilot adapter to the deterministic Engineering Harness core.
 
-1. Read `CLAUDE.md`.
-2. Locate the Harness core from the developer environment, never by guessing: the core is the command held in `ENGINEERING_HARNESS_CORE`, run from the project root (for example `../harness-core`); when the variable is unset, use `engineering-harness` on PATH. `init` records the value in `.claude/settings.json`. The core resolves the Harness root by itself (`ENGINEERING_HARNESS_ROOT`, otherwise the `_root` directory beside the binary); never pass a root and never look for one. If the core exits 64, stop and report its message.
+1. Read `.github/copilot-instructions.md`.
+2. The Harness core is the command `{{harness_core}}`, run from the project root; `init` wrote it into this prompt and into `.github/copilot-instructions.md`. Never guess another command. The core resolves the Harness root by itself (`ENGINEERING_HARNESS_ROOT`, otherwise the `_root` directory beside the binary); never pass a root and never look for one. If the core exits 64, stop and report its message.
 3. For `status`, invoke the core's `inspect_project` operation for the current project and render its structured result. Do not derive state yourself. `status` never writes anything.
 4. Without `status`, first inspect the project. If the core reports lifecycle state `PROJECT_INPUT_REQUIRED` and `project-pack/PROJECT-PACK-BRIEF.md` exists, that brief is the operator's explicit written instruction: complete `project-pack/` by following it exactly, re-run `inspect_project` after every change, and stop when the state is `PROJECT_INPUT_READY`. Without a brief, stop for `HUMAN_INPUT`. This is the only case in which this command writes under `project-pack/`.
 5. When the core's next action is an AI-assisted operation (BRS §34) you are the author of its input for `ingest_specification`, `derive_architecture` and `generate_work_items`; `derive_project_ai_policy` takes no input document. The core only decides whether the operation is permitted, validates the document against the release schema and writes it into the governed location.

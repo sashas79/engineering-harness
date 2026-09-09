@@ -4,6 +4,13 @@
     "ENGINEERING_HARNESS_CORE": "{{harness_core}}"
   },
   "permissions": {
-    "allow": ["Bash({{harness_core}}:*)"]
+    "allow": ["Bash({{harness_core}}:*)"],
+    "deny": [
+      "Bash({{harness_core}} approve_pending:*)",
+      "Bash({{harness_core}} reject_pending:*)",
+      "Bash({{harness_core}} record_specification_decision:*)",
+      "Bash({{harness_core}} record_architecture_decision:*)",
+      "Bash({{harness_core}} record_work_decision:*)"
+    ]
   }
 }

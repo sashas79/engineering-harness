@@ -199,17 +199,4 @@ Exit status: 0 OK, 2 INCOMPLETE, 3 INVALID, 4 BLOCKED, 5 ERROR, 64 usage.
 - Copilot asks for approval on every core call, or `/bootstrap` is missing
   - Cause: untrusted workspace, or prompt files disabled
   - Fix: trust the workspace; check `chat.promptFiles` in `.vscode/settings.json`
-
-## Running the suite against a real project
-
-`test/e2e/external-vector.test.ts` is skipped unless two environment variables point at a real project (at `ARCHITECTURE_BASELINED`) and the Harness root holding the release it records. The project is copied into a temporary directory and driven to `EXECUTION_READY` and back; the original is never modified and nothing from it enters this repository.
-
-```bash
-EH_VECTOR_PROJECT=/path/to/payroll-platform \
-EH_VECTOR_HARNESS_ROOT=/path/to/_root \
-npx vitest run test/e2e/external-vector.test.ts
-```
-
-## Files the manifest guards
-
-`npm test` first verifies every file listed in `handover-manifest.json` (`BRS.md`, `VALIDATION.md`, the schemas, the annexes and the canonicalisation vectors) against its recorded SHA-256 and size. A normative change goes through BRS §60 change control: bump the BRS version, edit the file, and update its `size` and `sha256` in the manifest in the same commit. Implementation notes belong in `IMPLEMENTATION.md` or `BUILD.md`.
+  

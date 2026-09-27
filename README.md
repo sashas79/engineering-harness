@@ -17,8 +17,7 @@ engineering-harness/
 ├── annexes/                   harness-v1 vectors and definitive contract tests
 ├── project-template/          clean engineered-project skeleton
 ├── project-pack-template/     human-input skeleton
-├── adapters/                  execution adapters
-└── harness-init.sh            release installer + project initializer
+└── adapters/                  execution adapters
 ```
 
 The deterministic core implementation is merged separately; see `CORE-INTEGRATION.md`.
@@ -28,13 +27,13 @@ The deterministic core implementation is merged separately; see `CORE-INTEGRATIO
 The initializer performs the distribution/setup work that precedes `bootstrap_repository`:
 
 ```bash
-bash ./harness-init.sh <target-project> [version] [adapter] <harness-root>
+bash ./harness-core init <target-project> [version] [adapter] 
 ```
 
 Example:
 
 ```bash
-bash ./harness-init.sh ecommerce-platform v0.3.0 claude-code "$HOME/.engineering-harness"
+bash ./harness-core init ecommerce-platform v0.3.0 claude-code 
 ```
 
 It installs the exact Harness release under:
@@ -61,9 +60,7 @@ tests/
 infra/
 ```
 
-It does **not** complete project-specific inputs and does **not** run `bootstrap_repository`.
-
-After initialisation, the project team completes `/project-pack`. The deterministic core then derives `PROJECT_INPUT_READY`, after which `bootstrap_repository --project-root ... --harness-root ...` may materialise `/engineering`.
+After initialisation, the project team completes `/project-pack`. The deterministic core then derives `PROJECT_INPUT_READY`, after which agent `/bootstrap` command eventually creates `/engineering` directory content.
 
 ## Normative authority
 

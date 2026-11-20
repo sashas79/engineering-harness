@@ -42,7 +42,8 @@
         "record_work_decision",
         "baseline_work",
         "resolve_blocker",
-        "none_bootstrap_complete"
+        "none_bootstrap_complete",
+        "open_change"
       ]
     }
   }

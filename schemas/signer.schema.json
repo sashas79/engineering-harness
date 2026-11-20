@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://approval/signer/v1",
+  "title": "signer.schema.json",
+  "description": "Signer record (BRS Section 73.4), evidence/signers/SGN-<nnnn>.yaml. A signed record. The anchor has `previous: null` and is signed with the key it enrols. Self digest: signer.binding.digest. `retained` is pre-sorted by path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "signer"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "signer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "action",
+        "identity",
+        "key",
+        "previous",
+        "signed_by",
+        "captured_at",
+        "captured_via",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SGN-[0-9]{4}$"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "enrol",
+            "revoke"
+          ]
+        },
+        "identity": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+        },
+        "key": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "public_key",
+            "fingerprint"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "ssh-ed25519",
+                "ecdsa-sha2-nistp256",
+                "ecdsa-sha2-nistp384",
+                "ecdsa-sha2-nistp521",
+                "ssh-rsa",
+                "sk-ssh-ed25519@openssh.com",
+                "sk-ecdsa-sha2-nistp256@openssh.com"
+              ]
+            },
+            "public_key": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+            },
+            "fingerprint": {
+              "type": "string",
+              "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+            }
+          }
+        },
+        "previous": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^SGN-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "signed_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "key"
+          ],
+          "properties": {
+            "identity": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+            },
+            "key": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "fingerprint"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ssh-ed25519",
+                    "ecdsa-sha2-nistp256",
+                    "ecdsa-sha2-nistp384",
+                    "ecdsa-sha2-nistp521",
+                    "ssh-rsa",
+                    "sk-ssh-ed25519@openssh.com",
+                    "sk-ecdsa-sha2-nistp256@openssh.com"
+                  ]
+                },
+                "fingerprint": {
+                  "type": "string",
+                  "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+                }
+              }
+            }
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retained": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+              },
+              "path": {
+                "$ref": "schema://common/repository-path/v1"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              }
+            }
+          }
+        },
+        "captured_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "captured_via": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interface"
+          ],
+          "properties": {
+            "interface": {
+              "type": "string",
+              "enum": [
+                "cli",
+                "ci",
+                "adapter",
+                "library"
+              ]
+            },
+            "adapter": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "confirmation": {
+              "type": "string",
+              "enum": [
+                "terminal"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "const": "adapter"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "adapter"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "enum": [
+                      "cli",
+                      "ci",
+                      "library"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "adapter": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "revoke"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason",
+              "retained"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "reason"
+                  ]
+                },
+                {
+                  "required": [
+                    "retained"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

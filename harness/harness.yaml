@@ -1,9 +1,16 @@
 schema_version: 1
 harness:
-  version: v0.3.0
-  bootstrap_workflow: workflow://bootstrap
+  version: v0.4.0
+  core_contract: 2
+  workflows:
+    bootstrap: workflow://bootstrap
+    maintenance: workflow://maintenance
+    execution: workflow://execution
   schemas: schemas/schema-catalog.json
   profiles: profiles
   technologies: technologies
   controls: controls
   gates: gates
+  adapters: adapters/adapters.yaml
+  adoptable_from:
+    - v0.3.0

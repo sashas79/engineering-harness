@@ -1,0 +1,18 @@
+{
+  "description": "Engineering Harness: asks the adapter_guard of the Harness core before a shell command or a file edit runs.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Bash|apply_patch)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "d=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; [ -x \"$d/harness\" ] || exit 0; exec \"$d/harness\" adapter_guard",
+            "timeout": 30,
+            "statusMessage": "Checking the call against the Engineering Harness guard"
+          }
+        ]
+      }
+    ]
+  }
+}

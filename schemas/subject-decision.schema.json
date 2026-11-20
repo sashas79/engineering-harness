@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://approval/subject-decision/v1",
+  "title": "subject-decision.schema.json",
+  "description": "Subject decision (BRS Sections 65.1 and 66.3), evidence/decisions/DEC-<nnnn>.yaml: a task disposition or the decision on a registered change. A signed record (Section 73): its identity assurance is the signed form only, because no subject decision exists under a release without signed decisions (designer ruling RUL-42). Self digest: decision.binding.digest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gate",
+        "subject",
+        "decision",
+        "approver",
+        "identity_assurance",
+        "supersedes",
+        "captured_at",
+        "captured_via",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^DEC-[0-9]{4}$"
+        },
+        "gate": {
+          "type": "string",
+          "enum": [
+            "gate://task-disposition",
+            "gate://registered-change"
+          ]
+        },
+        "subject": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "id",
+                "definition",
+                "work_baseline"
+              ],
+              "properties": {
+                "type": {
+                  "const": "work_item"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^TASK-[A-Za-z0-9._-]+$"
+                },
+                "definition": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "path",
+                    "digest"
+                  ],
+                  "properties": {
+                    "path": {
+                      "$ref": "schema://common/repository-path/v1"
+                    },
+                    "digest": {
+                      "$ref": "schema://common/digest/v1"
+                    }
+                  }
+                },
+                "work_baseline": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "path",
+                    "digest"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                    },
+                    "path": {
+                      "$ref": "schema://common/repository-path/v1"
+                    },
+                    "digest": {
+                      "$ref": "schema://common/digest/v1"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "type": {
+                  "const": "change"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^CHG-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "deferred",
+            "withdrawn",
+            "reinstated",
+            "accepted",
+            "rejected"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "authority"
+          ],
+          "properties": {
+            "identity": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+            },
+            "authority": {
+              "type": "string",
+              "enum": [
+                "product_domain",
+                "architecture",
+                "security_platform",
+                "engineering",
+                "release"
+              ]
+            }
+          }
+        },
+        "identity_assurance": {
+          "allOf": [
+            {
+              "$ref": "schema://approval/signature-assurance/v1"
+            },
+            {
+              "not": {
+                "required": [
+                  "identity"
+                ]
+              }
+            }
+          ]
+        },
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^CHG-[0-9]{4}$"
+            },
+            "path": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^DEC-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "captured_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "captured_via": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interface"
+          ],
+          "properties": {
+            "interface": {
+              "type": "string",
+              "enum": [
+                "cli",
+                "ci",
+                "adapter",
+                "library"
+              ]
+            },
+            "adapter": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "confirmation": {
+              "type": "string",
+              "enum": [
+                "terminal"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "const": "adapter"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "adapter"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "enum": [
+                      "cli",
+                      "ci",
+                      "library"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "adapter": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "gate": {
+                "const": "gate://task-disposition"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ],
+            "properties": {
+              "subject": {
+                "properties": {
+                  "type": {
+                    "const": "work_item"
+                  }
+                }
+              },
+              "decision": {
+                "enum": [
+                  "deferred",
+                  "withdrawn",
+                  "reinstated"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "subject": {
+                "properties": {
+                  "type": {
+                    "const": "change"
+                  }
+                }
+              },
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "rejected"
+                ]
+              }
+            },
+            "not": {
+              "required": [
+                "change"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

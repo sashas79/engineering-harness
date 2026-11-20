@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "d=.; [ -x ./harness ] || d=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; [ -x \"$d/harness\" ] || exit 0; exec \"$d/harness\" adapter_guard",
+        "powershell": "$d = '.'; if (-not (Test-Path -LiteralPath \"$d\\harness.cmd\")) { $d = (git rev-parse --show-toplevel 2>$null) }; if (-not $d -or -not (Test-Path -LiteralPath \"$d\\harness.cmd\")) { exit 0 }; $input | & \"$d\\harness.cmd\" adapter_guard; exit $LASTEXITCODE",
+        "cwd": ".",
+        "timeoutSec": 30
+      }
+    ]
+  }
+}

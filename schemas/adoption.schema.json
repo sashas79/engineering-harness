@@ -1,0 +1,449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://provenance/adoption/v1",
+  "title": "adoption.schema.json",
+  "description": "Adoption record (BRS Section 67.4), evidence/adoptions/ADOPT-<nnnn>.yaml. A signed record (Section 73). Self digest: adoption.binding.digest. Pre-sorted: `baselines` by type, each baseline `items` by kind then id, `declared_decisions` by id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "adoption"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "adoption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "harness",
+        "project_pack",
+        "engineering",
+        "control_equivalent",
+        "baselines",
+        "ai_policy",
+        "supersedes",
+        "signed_by",
+        "captured_at",
+        "captured_via",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ADOPT-[0-9]{4}$"
+        },
+        "harness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "from",
+            "to"
+          ],
+          "properties": {
+            "from": {
+              "type": "string",
+              "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+            },
+            "to": {
+              "type": "string",
+              "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+            }
+          }
+        },
+        "project_pack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fingerprint"
+          ],
+          "properties": {
+            "fingerprint": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "engineering": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_digest_before",
+            "resolution_digest_after"
+          ],
+          "properties": {
+            "resolution_digest_before": {
+              "$ref": "schema://common/digest/v1"
+            },
+            "resolution_digest_after": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "control_equivalent": {
+          "type": "boolean"
+        },
+        "baselines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "id",
+              "digest",
+              "candidate_digest",
+              "controls",
+              "items"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "specification",
+                  "architecture",
+                  "work"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              },
+              "candidate_digest": {
+                "$ref": "schema://common/digest/v1"
+              },
+              "controls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "control",
+                    "result"
+                  ],
+                  "properties": {
+                    "control": {
+                      "type": "string",
+                      "pattern": "^control://"
+                    },
+                    "result": {
+                      "type": "string",
+                      "enum": [
+                        "PASS",
+                        "FAIL",
+                        "ERROR"
+                      ]
+                    }
+                  }
+                }
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "id",
+                    "path",
+                    "digest"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "requirement",
+                        "acceptance_criterion",
+                        "component",
+                        "adr",
+                        "contract",
+                        "task",
+                        "graph_entry",
+                        "document"
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "path": {
+                      "$ref": "schema://common/repository-path/v1"
+                    },
+                    "digest": {
+                      "$ref": "schema://common/digest/v1"
+                    },
+                    "requirement_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^REQ-"
+                      }
+                    },
+                    "acceptance_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^AC-"
+                      }
+                    },
+                    "change_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^CHG-[0-9]{4}$"
+                      }
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^TASK-"
+                      }
+                    }
+                  },
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "kind": {
+                            "const": "task"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "requirement_refs",
+                          "acceptance_refs",
+                          "change_refs",
+                          "dependencies"
+                        ]
+                      },
+                      "else": {
+                        "not": {
+                          "anyOf": [
+                            {
+                              "required": [
+                                "requirement_refs"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "acceptance_refs"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "change_refs"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "dependencies"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "maxItems": 3
+        },
+        "ai_policy": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "path": {
+                  "const": "ai/policy.yaml"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "declared_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^APR-(SPEC|ARCH|WORK)-[0-9]{4}$"
+              },
+              "path": {
+                "$ref": "schema://common/repository-path/v1"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              }
+            }
+          }
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^ADOPT-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "signed_by": {
+          "allOf": [
+            {
+              "$ref": "schema://approval/signature-assurance/v1"
+            },
+            {
+              "required": [
+                "identity"
+              ]
+            }
+          ]
+        },
+        "captured_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "captured_via": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interface"
+          ],
+          "properties": {
+            "interface": {
+              "type": "string",
+              "enum": [
+                "cli",
+                "ci",
+                "adapter",
+                "library"
+              ]
+            },
+            "adapter": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "confirmation": {
+              "type": "string",
+              "enum": [
+                "terminal"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "const": "adapter"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "adapter"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "interface": {
+                    "enum": [
+                      "cli",
+                      "ci",
+                      "library"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "adapter": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

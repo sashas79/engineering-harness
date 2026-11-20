@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/execution-workflow/v1",
+  "title": "execution-workflow.schema.json",
+  "description": "Execution workflow (BRS Section 71.1), workflows/execution.yaml: the run statuses, the event types and the permitted transitions between them (Section 64). `from: none` is the state before a run exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow",
+    "run_statuses",
+    "event_types",
+    "transitions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "const": "workflow://execution"
+        }
+      }
+    },
+    "run_statuses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "in_progress",
+          "blocked",
+          "done"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "event_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "started",
+          "resumed",
+          "progress",
+          "blocked",
+          "completed"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "event",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "type": "string",
+            "enum": [
+              "none",
+              "in_progress",
+              "blocked",
+              "done"
+            ]
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "started",
+              "resumed",
+              "progress",
+              "blocked",
+              "completed"
+            ]
+          },
+          "to": {
+            "type": "string",
+            "enum": [
+              "in_progress",
+              "blocked",
+              "done"
+            ]
+          },
+          "operation": {
+            "type": "string",
+            "enum": [
+              "start_task",
+              "record_task_progress",
+              "block_task",
+              "complete_task",
+              "reopen_task"
+            ]
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

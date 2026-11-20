@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://provenance/adapters/v1",
+  "title": "adapters-provenance.schema.json",
+  "description": "Parsed `.engineering-harness-adapters` (FR-033 as amended): the governing release version and the installed adapter identifiers, unique and in ascending code-point order. The file is absent when no adapter is installed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "adapters"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "adapters": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}

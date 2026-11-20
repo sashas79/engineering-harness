@@ -1,0 +1,33 @@
+#!/bin/sh
+# Engineering Harness launcher (BRS Section 69.4). It passes its arguments unchanged to the
+# core, which it looks for in this order: the ENGINEERING_HARNESS_CORE environment variable,
+# harness-core in the parent of this file's directory, harness-core on the search path.
+# With no core it exits 64, or 0 for adapter_guard so that a tool hook never fails.
+# For adapter_guard it exits 0 or 2 only (Section 68.3): status 2 of the core passes through,
+# any other status (a core that crashes or cannot start) becomes 0.
+guard=
+if [ "${1:-}" = adapter_guard ]; then guard=1; fi
+run_core() {
+  if [ -z "$guard" ]; then exec "$@"; fi
+  "$@"
+  if [ $? -eq 2 ]; then exit 2; fi
+  exit 0
+}
+no_core() {
+  if [ -n "$guard" ]; then exit 0; fi
+  echo "harness: no Engineering Harness core found: set ENGINEERING_HARNESS_CORE, or place harness-core beside the project directory or on the search path" >&2
+  exit 64
+}
+ENGINEERING_HARNESS_PROJECT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P) || no_core
+export ENGINEERING_HARNESS_PROJECT_ROOT
+if [ -n "${ENGINEERING_HARNESS_CORE:-}" ] && command -v "$ENGINEERING_HARNESS_CORE" >/dev/null 2>&1; then
+  run_core "$ENGINEERING_HARNESS_CORE" "$@"
+fi
+beside=$(dirname -- "$ENGINEERING_HARNESS_PROJECT_ROOT")/harness-core
+if [ -f "$beside" ] && [ -x "$beside" ]; then
+  run_core "$beside" "$@"
+fi
+if command -v harness-core >/dev/null 2>&1; then
+  run_core harness-core "$@"
+fi
+no_core

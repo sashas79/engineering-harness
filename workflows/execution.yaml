@@ -1,0 +1,34 @@
+# Execution workflow (BRS Section 71.1): the statuses of a run, the event types, and the
+# permitted transitions between them (Section 64.4). `from: none` is the state before the run
+# exists. A run whose status is `done` has no transition: it is never modified (Section 64.2).
+schema_version: 1
+workflow:
+  id: workflow://execution
+run_statuses:
+  - in_progress
+  - blocked
+  - done
+event_types:
+  - started
+  - resumed
+  - progress
+  - blocked
+  - completed
+transitions:
+  # start_task creates the next run, or resumes the open one.
+  - { from: none, event: started, to: in_progress, operation: start_task }
+  # RUN-0001 that continues an open legacy state file starts with `resumed` (Section 64.6).
+  - { from: none, event: resumed, to: in_progress, operation: start_task }
+  - { from: in_progress, event: resumed, to: in_progress, operation: start_task }
+  - { from: blocked, event: resumed, to: in_progress, operation: start_task }
+  # reopen_task creates the next run of a finished Work Item, bound to a change record.
+  - { from: none, event: started, to: in_progress, operation: reopen_task }
+  # record_task_progress appends a hand-over note and leaves the status as it is.
+  - { from: in_progress, event: progress, to: in_progress, operation: record_task_progress }
+  - { from: blocked, event: progress, to: blocked, operation: record_task_progress }
+  # block_task parks the open run.
+  - { from: in_progress, event: blocked, to: blocked, operation: block_task }
+  - { from: blocked, event: blocked, to: blocked, operation: block_task }
+  # complete_task closes the open run.
+  - { from: in_progress, event: completed, to: done, operation: complete_task }
+  - { from: blocked, event: completed, to: done, operation: complete_task }

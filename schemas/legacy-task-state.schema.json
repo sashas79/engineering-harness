@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://runtime/legacy-task-state/v1",
+  "title": "legacy-task-state.schema.json",
+  "description": "Legacy task state (BRS Section 64.6): the three fields the core reads from a v0.3.0 state file work/state/<TASK-id>.yaml written under the FR-036 grammar of BRS 1.2. The core projects `task_state` onto these three members before validating; every other value of the file is opaque and is ignored. The file is never rewritten.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_state"
+  ],
+  "properties": {
+    "task_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task",
+        "status",
+        "work_baseline"
+      ],
+      "properties": {
+        "task": {
+          "type": "string",
+          "pattern": "^TASK-[A-Za-z0-9._-]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "in_progress",
+            "blocked",
+            "done"
+          ]
+        },
+        "work_baseline": {
+          "$ref": "schema://common/repository-path/v1"
+        }
+      }
+    }
+  }
+}

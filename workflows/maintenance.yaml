@@ -1,0 +1,24 @@
+# Maintenance workflow (BRS Section 71.1). The core implements Sections 37, 62 and 63 directly
+# and consults this document for the reach of each change kind (Section 62.3), the chains a
+# revision of each reach replaces, in the order it replaces them, and the gate of each
+# reserved maintenance decision (Sections 65 and 66).
+schema_version: 1
+workflow:
+  id: workflow://maintenance
+change_kinds:
+  # `default_reach_rework_only` applies when the operator names only Work Items to re-execute.
+  - { kind: defect, minimum_reach: execution, default_reach: work, default_reach_rework_only: execution }
+  - { kind: follow_up, minimum_reach: work, default_reach: work }
+  - { kind: documentation, minimum_reach: work, default_reach: work }
+  - { kind: new_requirement, minimum_reach: specification, default_reach: specification }
+reaches:
+  # `none` is the reach of a registered change: no revision and no execution.
+  - { reach: none, chains: [] }
+  # `execution` replaces no baseline: named finished Work Items are re-executed.
+  - { reach: execution, chains: [] }
+  - { reach: work, chains: [work] }
+  - { reach: architecture, chains: [architecture, work] }
+  - { reach: specification, chains: [specification, architecture, work] }
+gates:
+  - { operation: record_task_decision, gate: gate://task-disposition }
+  - { operation: record_change_decision, gate: gate://registered-change }

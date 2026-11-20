@@ -1,0 +1,62 @@
+# Engineering Harness command rules for Codex (BRS Sections 68.1 and 69.7).
+# The reserved operations record a human decision; the operator commands change what governs
+# the project. Both belong to the operator, who runs them in their own terminal. An agent never
+# runs them, and never asks OpenSSH to sign.
+
+# Reserved operations (Section 68.1).
+prefix_rule(
+    pattern = ["./harness", [
+        "record_specification_decision",
+        "record_architecture_decision",
+        "record_work_decision",
+        "record_task_decision",
+        "record_change_decision",
+        "approve_pending",
+        "reject_pending",
+    ]],
+    decision = "forbidden",
+    justification = "A human decision of the Engineering Harness is recorded by the operator in their own terminal, never by an agent. Stop and present the gate and the command to the operator.",
+    match = [
+        "./harness approve_pending --project-root .",
+        "./harness record_task_decision --project-root . --task TASK-0001",
+    ],
+    not_match = [
+        "./harness inspect_project --project-root .",
+    ],
+)
+
+# Operator commands (Section 68.1).
+prefix_rule(
+    pattern = ["./harness", [
+        "adopt_release",
+        "enrol_signer",
+        "revoke_signer",
+        "trust_signers",
+        "adapter_add",
+        "adapter_remove",
+        "adapter_sync",
+    ]],
+    decision = "forbidden",
+    justification = "An operator command of the Engineering Harness is run by the operator in their own terminal, never by an agent. Stop and tell the operator which command is needed.",
+    match = [
+        "./harness adopt_release --project-root .",
+        "./harness adapter_sync --project-root .",
+    ],
+    not_match = [
+        "./harness check_adapters --project-root .",
+    ],
+)
+
+# A signature is the operator's own act (Section 73.6).
+prefix_rule(
+    pattern = ["ssh-keygen", "-Y", "sign"],
+    decision = "forbidden",
+    justification = "A signature under the Engineering Harness is made by the operator through the Harness core, never by an agent.",
+    match = [
+        "ssh-keygen -Y sign -n engineering-harness -f key",
+    ],
+    not_match = [
+        "ssh-keygen -Y verify -f allowed_signers -I operator -n engineering-harness -s record.yaml.sig",
+        "ssh-keygen -l -f key.pub",
+    ],
+)

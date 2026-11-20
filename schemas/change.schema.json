@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://maintenance/change/v1",
+  "title": "change.schema.json",
+  "description": "Change record (BRS Section 62.2), evidence/changes/CHG-<nnnn>.yaml. Self digest: change.binding.digest. `rework` is pre-sorted by task ID.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "change"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "origin",
+        "title",
+        "statement",
+        "reach",
+        "rework",
+        "acceptance",
+        "baselines",
+        "supersedes",
+        "opened_at",
+        "opened_via",
+        "binding"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CHG-[0-9]{4}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "defect",
+            "follow_up",
+            "new_requirement",
+            "documentation"
+          ]
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "registered"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reach": {
+          "type": "string",
+          "enum": [
+            "none",
+            "execution",
+            "work",
+            "architecture",
+            "specification"
+          ]
+        },
+        "rework": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TASK-[A-Za-z0-9._-]+$"
+          },
+          "uniqueItems": true
+        },
+        "acceptance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "statement"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^CHG-[0-9]{4}-AC-[0-9]{2}$"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "baselines": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "specification": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            },
+            "architecture": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            },
+            "work": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          }
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^CHG-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          ]
+        },
+        "registered": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "paths",
+            "commits",
+            "work_items"
+          ],
+          "properties": {
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "path",
+                  "digest"
+                ],
+                "properties": {
+                  "path": {
+                    "$ref": "schema://common/repository-path/v1"
+                  },
+                  "digest": {
+                    "$ref": "schema://common/digest/v1"
+                  }
+                }
+              },
+              "minItems": 1
+            },
+            "commits": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{7,64}$"
+              }
+            },
+            "work_items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^TASK-[A-Za-z0-9._-]+$"
+              },
+              "uniqueItems": true
+            }
+          }
+        },
+        "opened_at": {
+          "$ref": "schema://common/timestamp/v1"
+        },
+        "opened_via": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interface",
+            "caller"
+          ],
+          "properties": {
+            "interface": {
+              "type": "string",
+              "enum": [
+                "cli",
+                "ci",
+                "adapter",
+                "library"
+              ]
+            },
+            "caller": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+            }
+          }
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "canonicalisation",
+            "digest"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "canonicalisation": {
+              "const": "harness-v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "registered"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "registered"
+            ],
+            "properties": {
+              "reach": {
+                "const": "none"
+              },
+              "rework": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reach": {
+                "enum": [
+                  "execution",
+                  "work",
+                  "architecture",
+                  "specification"
+                ]
+              }
+            },
+            "not": {
+              "required": [
+                "registered"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

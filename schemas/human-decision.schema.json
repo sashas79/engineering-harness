@@ -92,20 +92,38 @@
           }
         },
         "identity_assurance": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "mechanism",
-            "level"
-          ],
-          "properties": {
-            "mechanism": {
-              "const": "declared-project-identity"
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mechanism",
+                "level"
+              ],
+              "properties": {
+                "mechanism": {
+                  "const": "declared-project-identity"
+                },
+                "level": {
+                  "const": "declared"
+                }
+              }
             },
-            "level": {
-              "const": "declared"
+            {
+              "allOf": [
+                {
+                  "$ref": "schema://approval/signature-assurance/v1"
+                },
+                {
+                  "not": {
+                    "required": [
+                      "identity"
+                    ]
+                  }
+                }
+              ]
             }
-          }
+          ]
         },
         "captured_at": {
           "$ref": "schema://common/timestamp/v1"
@@ -135,6 +153,12 @@
                 {
                   "type": "null"
                 }
+              ]
+            },
+            "confirmation": {
+              "type": "string",
+              "enum": [
+                "terminal"
               ]
             }
           },

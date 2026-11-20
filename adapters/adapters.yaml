@@ -1,0 +1,139 @@
+# Adapter manifest of Engineering Harness v0.4.0 (BRS Section 69.2, schema://harness/adapter-manifest/v1).
+#
+# The single authored text is under source/. Every file below that names a `source` is rendered
+# from it by `render_adapters`: the text is copied unchanged and the rendering adds only its
+# path, its front matter (or the markers of the managed block) and the files the agent needs
+# beside it. A file with `content` is written literally. A file with neither is a static file
+# kept in the overlay directory. Rendered and static files live in <adapter>/overlay/<path>
+# and common/overlay/<path>; the files of an adoptable release in adoptable/<release>/<adapter>/<path>.
+#
+# No file of an overlay holds a value specific to a project or a machine (Section 69.3).
+schema_version: 1
+adapter_manifest:
+  common:
+    files:
+      - path: AGENTS.md
+        source: source/instructions.md
+        managed_block:
+          begin: "<!-- engineering-harness:begin -->"
+          end: "<!-- engineering-harness:end -->"
+      - path: harness
+        executable: true
+      - path: harness.cmd
+
+  adapters:
+    - id: claude-code
+      session_markers:
+        - CLAUDE_CODE_CHILD_SESSION
+        - CLAUDECODE
+      shared:
+        - AGENTS.md
+        - harness
+        - harness.cmd
+      files:
+        - path: CLAUDE.md
+          content: "@AGENTS.md\n"
+        - path: .claude/commands/bootstrap.md
+          source: source/commands/bootstrap.md
+          front_matter:
+            description: Report the project through the deterministic Engineering Harness core, or perform the next action of its bootstrap lifecycle. Use only when the operator invokes this command by name.
+            argument-hint: "[status | rework instruction]"
+            disable-model-invocation: true
+        - path: .claude/commands/execute.md
+          source: source/commands/execute.md
+          front_matter:
+            description: Report the Work Items of the project through the deterministic Engineering Harness core, or execute one Work Item. Use only when the operator invokes this command by name.
+            argument-hint: "[status | TASK-id]"
+            disable-model-invocation: true
+        - path: .claude/commands/maintain.md
+          source: source/commands/maintain.md
+          front_matter:
+            description: Report the maintenance state through the deterministic Engineering Harness core, open a change record, or continue the revision in progress. Use only when the operator invokes this command by name.
+            argument-hint: "[status | statement | register statement | rework instruction | abandon CHG-id]"
+            disable-model-invocation: true
+        - path: .claude/settings.json
+          enforcement: true
+
+    - id: codex
+      session_markers:
+        - CODEX_THREAD_ID
+      shared:
+        - AGENTS.md
+        - harness
+        - harness.cmd
+      files:
+        - path: .agents/skills/bootstrap/SKILL.md
+          source: source/commands/bootstrap.md
+          front_matter:
+            name: bootstrap
+            description: Report the project through the deterministic Engineering Harness core, or perform the next action of its bootstrap lifecycle. Use only when the operator invokes this command by name.
+        - path: .agents/skills/bootstrap/agents/openai.yaml
+          content: "policy:\n  allow_implicit_invocation: false\n"
+        - path: .agents/skills/execute/SKILL.md
+          source: source/commands/execute.md
+          front_matter:
+            name: execute
+            description: Report the Work Items of the project through the deterministic Engineering Harness core, or execute one Work Item. Use only when the operator invokes this command by name.
+        - path: .agents/skills/execute/agents/openai.yaml
+          content: "policy:\n  allow_implicit_invocation: false\n"
+        - path: .agents/skills/maintain/SKILL.md
+          source: source/commands/maintain.md
+          front_matter:
+            name: maintain
+            description: Report the maintenance state through the deterministic Engineering Harness core, open a change record, or continue the revision in progress. Use only when the operator invokes this command by name.
+        - path: .agents/skills/maintain/agents/openai.yaml
+          content: "policy:\n  allow_implicit_invocation: false\n"
+        - path: .codex/rules/engineering-harness.rules
+          enforcement: true
+        - path: .codex/hooks.json
+          enforcement: true
+
+    - id: copilot
+      session_markers: []
+      shared:
+        - AGENTS.md
+        - harness
+        - harness.cmd
+      files:
+        - path: .github/skills/bootstrap/SKILL.md
+          source: source/commands/bootstrap.md
+          front_matter:
+            name: bootstrap
+            description: Report the project through the deterministic Engineering Harness core, or perform the next action of its bootstrap lifecycle. Use only when the operator invokes this command by name.
+            argument-hint: "[status | rework instruction]"
+            disable-model-invocation: true
+        - path: .github/skills/execute/SKILL.md
+          source: source/commands/execute.md
+          front_matter:
+            name: execute
+            description: Report the Work Items of the project through the deterministic Engineering Harness core, or execute one Work Item. Use only when the operator invokes this command by name.
+            argument-hint: "[status | TASK-id]"
+            disable-model-invocation: true
+        - path: .github/skills/maintain/SKILL.md
+          source: source/commands/maintain.md
+          front_matter:
+            name: maintain
+            description: Report the maintenance state through the deterministic Engineering Harness core, open a change record, or continue the revision in progress. Use only when the operator invokes this command by name.
+            argument-hint: "[status | statement | register statement | rework instruction | abandon CHG-id]"
+            disable-model-invocation: true
+        - path: .github/hooks/engineering-harness.json
+          enforcement: true
+
+  # Overlay files of the adapters of each release in `adoptable_from` (Section 67.5), with the
+  # placeholder that release's `init` substituted. They let `adopt_release` recognise a pristine file.
+  adoptable:
+    - release: v0.3.0
+      placeholder: "{{harness_core}}"
+      adapters:
+        - id: claude-code
+          files:
+            - CLAUDE.md
+            - .claude/commands/bootstrap.md
+            - .claude/commands/execute.md
+            - .claude/settings.json
+        - id: copilot
+          files:
+            - .github/copilot-instructions.md
+            - .github/prompts/bootstrap.prompt.md
+            - .github/prompts/execute.prompt.md
+            - .vscode/settings.json

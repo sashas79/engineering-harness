@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://harness/adapter-manifest/v1",
+  "title": "adapter-manifest.schema.json",
+  "description": "Adapter manifest of a release (BRS Section 69.2): `adapters/adapters.yaml`. For each adapter the identifier, its overlay files with the source each is rendered from and its native front matter, the common files it shares, its enforcement files and its agent session markers; and, for each release in `adoptable_from`, the overlay files of that release's adapters (Section 67.5). A file entry has `source` (rendered from the single authored text), `content` (written literally) or neither (a static file kept in the overlay directory).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "adapter_manifest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "adapter_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "common",
+        "adapters",
+        "adoptable"
+      ],
+      "properties": {
+        "common": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "files"
+          ],
+          "properties": {
+            "files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file"
+              },
+              "minItems": 1
+            }
+          }
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/adapter"
+          },
+          "minItems": 1
+        },
+        "adoptable": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/adoptable"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "overlayPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9._/-]+(?<!/)$"
+    },
+    "sourcePath": {
+      "type": "string",
+      "pattern": "^source/(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)[A-Za-z0-9._/-]+(?<!/)$"
+    },
+    "frontMatter": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "boolean"
+        ]
+      }
+    },
+    "managedBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "begin",
+        "end"
+      ],
+      "properties": {
+        "begin": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "end": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\r\\n]+$"
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/overlayPath"
+        },
+        "source": {
+          "$ref": "#/$defs/sourcePath"
+        },
+        "front_matter": {
+          "$ref": "#/$defs/frontMatter"
+        },
+        "managed_block": {
+          "$ref": "#/$defs/managedBlock"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enforcement": {
+          "type": "boolean"
+        },
+        "executable": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "source",
+              "content"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "front_matter"
+            ]
+          },
+          "then": {
+            "required": [
+              "source"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "managed_block"
+            ]
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "not": {
+              "required": [
+                "front_matter"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "session_markers",
+        "shared",
+        "files"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "session_markers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "uniqueItems": true
+        },
+        "shared": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/overlayPath"
+          },
+          "uniqueItems": true
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "adoptable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release",
+        "adapters"
+      ],
+      "properties": {
+        "release": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+        },
+        "placeholder": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "files"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/identifier"
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/overlayPath"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

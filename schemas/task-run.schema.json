@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://runtime/task-run/v1",
+  "title": "task-run.schema.json",
+  "description": "Run record (BRS Section 64.2), work/state/<TASK-id>/RUN-<nnnn>.yaml. A run carries no self digest and is not a canonicalised object. Events are only appended; `changed_paths` is in ascending path order; `completion` exists exactly when the status is done. An entry of `completion.changed` is either a path with its raw-byte digest or, for a path that no longer exists at completion (a task may delete a file), the path with `absent: true` and no digest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "task",
+        "definition",
+        "work_baseline",
+        "status",
+        "events",
+        "changed_paths"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^RUN-[0-9]{4}$"
+        },
+        "task": {
+          "type": "string",
+          "pattern": "^TASK-[A-Za-z0-9._-]+$"
+        },
+        "definition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "work_baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+            },
+            "path": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "change": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "path",
+            "digest"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^CHG-[0-9]{4}$"
+            },
+            "path": {
+              "$ref": "schema://common/repository-path/v1"
+            },
+            "digest": {
+              "$ref": "schema://common/digest/v1"
+            }
+          }
+        },
+        "continues": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "schema://common/repository-path/v1"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "in_progress",
+            "blocked",
+            "done"
+          ]
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "seq",
+              "type",
+              "at",
+              "caller"
+            ],
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "started",
+                  "resumed",
+                  "progress",
+                  "blocked",
+                  "completed"
+                ]
+              },
+              "at": {
+                "$ref": "schema://common/timestamp/v1"
+              },
+              "caller": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "schema://common/repository-path/v1"
+          },
+          "uniqueItems": true
+        },
+        "completion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "verification",
+            "changed"
+          ],
+          "properties": {
+            "verification": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "result"
+                ],
+                "properties": {
+                  "control": {
+                    "type": "string",
+                    "pattern": "^control://"
+                  },
+                  "result": {
+                    "type": "string",
+                    "enum": [
+                      "PASS",
+                      "NOT_RUN"
+                    ]
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              },
+              "minItems": 1
+            },
+            "acceptance_notes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "criterion",
+                  "note"
+                ],
+                "properties": {
+                  "criterion": {
+                    "type": "string",
+                    "pattern": "^(AC-|CHG-[0-9]+-AC-)"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            "changed": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "path",
+                      "digest"
+                    ],
+                    "properties": {
+                      "path": {
+                        "$ref": "schema://common/repository-path/v1"
+                      },
+                      "digest": {
+                        "$ref": "schema://common/digest/v1"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "path",
+                      "absent"
+                    ],
+                    "properties": {
+                      "path": {
+                        "$ref": "schema://common/repository-path/v1"
+                      },
+                      "absent": {
+                        "const": true
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "done"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "completion"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "completion"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -42,7 +42,7 @@
             "type": "string",
             "pattern": "^REQ-"
           },
-          "minItems": 1
+          "minItems": 0
         },
         "acceptance_refs": {
           "type": "array",
@@ -50,7 +50,7 @@
             "type": "string",
             "pattern": "^AC-"
           },
-          "minItems": 1
+          "minItems": 0
         },
         "architecture_refs": {
           "type": "array",
@@ -90,6 +90,14 @@
             "type": "string",
             "pattern": "^gate://"
           }
+        },
+        "change_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CHG-[0-9]{4}$"
+          },
+          "uniqueItems": true
         }
       }
     }

@@ -17,7 +17,6 @@
       "additionalProperties": false,
       "required": [
         "version",
-        "bootstrap_workflow",
         "schemas",
         "profiles",
         "technologies",
@@ -47,8 +46,88 @@
         },
         "gates": {
           "$ref": "schema://common/repository-path/v1"
+        },
+        "core_contract": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "workflows": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "bootstrap",
+            "maintenance",
+            "execution"
+          ],
+          "properties": {
+            "bootstrap": {
+              "const": "workflow://bootstrap"
+            },
+            "maintenance": {
+              "const": "workflow://maintenance"
+            },
+            "execution": {
+              "const": "workflow://execution"
+            }
+          }
+        },
+        "adapters": {
+          "$ref": "schema://common/repository-path/v1"
+        },
+        "adoptable_from": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+          },
+          "uniqueItems": true
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "core_contract"
+            ]
+          },
+          "then": {
+            "required": [
+              "workflows",
+              "adapters",
+              "adoptable_from"
+            ],
+            "not": {
+              "required": [
+                "bootstrap_workflow"
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "bootstrap_workflow"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "workflows"
+                  ]
+                },
+                {
+                  "required": [
+                    "adapters"
+                  ]
+                },
+                {
+                  "required": [
+                    "adoptable_from"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
     }
   }
 }

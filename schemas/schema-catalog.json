@@ -14,6 +14,18 @@
       "path": "human-decision.schema.json"
     },
     {
+      "id": "schema://approval/signature-assurance/v1",
+      "path": "signature-assurance.schema.json"
+    },
+    {
+      "id": "schema://approval/signer/v1",
+      "path": "signer.schema.json"
+    },
+    {
+      "id": "schema://approval/subject-decision/v1",
+      "path": "subject-decision.schema.json"
+    },
+    {
       "id": "schema://common/canonicalisation-version/v1",
       "path": "canonicalisation-version.schema.json"
     },
@@ -56,6 +68,10 @@
     {
       "id": "schema://engineering/profile/v1",
       "path": "engineering-profile.schema.json"
+    },
+    {
+      "id": "schema://harness/adapter-manifest/v1",
+      "path": "adapter-manifest.schema.json"
     },
     {
       "id": "schema://harness/control/v1",
@@ -110,6 +126,14 @@
       "path": "bootstrap-workflow.schema.json"
     },
     {
+      "id": "schema://lifecycle/execution-workflow/v1",
+      "path": "execution-workflow.schema.json"
+    },
+    {
+      "id": "schema://lifecycle/maintenance-workflow/v1",
+      "path": "maintenance-workflow.schema.json"
+    },
+    {
       "id": "schema://lifecycle/next-action/v1",
       "path": "next-action.schema.json"
     },
@@ -120,6 +144,14 @@
     {
       "id": "schema://lifecycle/state/v1",
       "path": "lifecycle-state.schema.json"
+    },
+    {
+      "id": "schema://maintenance/change-closure/v1",
+      "path": "change-closure.schema.json"
+    },
+    {
+      "id": "schema://maintenance/change/v1",
+      "path": "change.schema.json"
     },
     {
       "id": "schema://project-pack/fingerprint-subject/v1",
@@ -158,6 +190,14 @@
       "path": "adapter-provenance.schema.json"
     },
     {
+      "id": "schema://provenance/adapters/v1",
+      "path": "adapters-provenance.schema.json"
+    },
+    {
+      "id": "schema://provenance/adoption/v1",
+      "path": "adoption.schema.json"
+    },
+    {
       "id": "schema://provenance/distribution/v1",
       "path": "distribution-provenance.schema.json"
     },
@@ -172,6 +212,18 @@
     {
       "id": "schema://runtime/evidence-envelope/v1",
       "path": "evidence-envelope.schema.json"
+    },
+    {
+      "id": "schema://runtime/legacy-task-state/v1",
+      "path": "legacy-task-state.schema.json"
+    },
+    {
+      "id": "schema://runtime/task-result/v1",
+      "path": "task-result.schema.json"
+    },
+    {
+      "id": "schema://runtime/task-run/v1",
+      "path": "task-run.schema.json"
     },
     {
       "id": "schema://validation/control-result/v1",

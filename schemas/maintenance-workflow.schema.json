@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://lifecycle/maintenance-workflow/v1",
+  "title": "maintenance-workflow.schema.json",
+  "description": "Maintenance workflow (BRS Section 71.1), workflows/maintenance.yaml: the change kinds with their minimum and default reach (Section 62.3), the chains each reach replaces, and the gates of the reserved maintenance decisions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow",
+    "change_kinds",
+    "reaches",
+    "gates"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "const": "workflow://maintenance"
+        }
+      }
+    },
+    "change_kinds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "minimum_reach",
+          "default_reach"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "defect",
+              "follow_up",
+              "new_requirement",
+              "documentation"
+            ]
+          },
+          "minimum_reach": {
+            "type": "string",
+            "enum": [
+              "execution",
+              "work",
+              "architecture",
+              "specification"
+            ]
+          },
+          "default_reach": {
+            "type": "string",
+            "enum": [
+              "execution",
+              "work",
+              "architecture",
+              "specification"
+            ]
+          },
+          "default_reach_rework_only": {
+            "type": "string",
+            "enum": [
+              "execution",
+              "work",
+              "architecture",
+              "specification"
+            ]
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "reaches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reach",
+          "chains"
+        ],
+        "properties": {
+          "reach": {
+            "type": "string",
+            "enum": [
+              "none",
+              "execution",
+              "work",
+              "architecture",
+              "specification"
+            ]
+          },
+          "chains": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "specification",
+                "architecture",
+                "work"
+              ]
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation",
+          "gate"
+        ],
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "record_task_decision",
+              "record_change_decision"
+            ]
+          },
+          "gate": {
+            "type": "string",
+            "pattern": "^gate://"
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

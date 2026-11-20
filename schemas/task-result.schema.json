@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://runtime/task-result/v1",
+  "title": "task-result.schema.json",
+  "description": "Task result (BRS Section 64.4): the input document of `complete_task`. One verification result for every identifier in the Work Item's verification_controls, optional notes per acceptance criterion, and the changed paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_result"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "task_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification",
+        "changed_paths"
+      ],
+      "properties": {
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "control",
+              "result"
+            ],
+            "properties": {
+              "control": {
+                "type": "string",
+                "pattern": "^control://"
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "PASS",
+                  "FAIL",
+                  "NOT_RUN"
+                ]
+              },
+              "command": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "acceptance_notes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "criterion",
+              "note"
+            ],
+            "properties": {
+              "criterion": {
+                "type": "string",
+                "pattern": "^(AC-|CHG-[0-9]+-AC-)"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "schema://common/repository-path/v1"
+          }
+        }
+      }
+    }
+  }
+}

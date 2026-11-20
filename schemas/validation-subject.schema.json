@@ -153,6 +153,50 @@
               "$ref": "schema://common/digest/v1"
             }
           }
+        },
+        "revision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "change",
+            "supersedes"
+          ],
+          "properties": {
+            "change": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^CHG-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            },
+            "supersedes": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            }
+          }
         }
       },
       "allOf": [

@@ -174,6 +174,409 @@
               "$ref": "schema://common/digest/v1"
             }
           }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id",
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "requirement",
+                  "acceptance_criterion",
+                  "component",
+                  "adr",
+                  "contract",
+                  "task",
+                  "graph_entry",
+                  "document"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "$ref": "schema://common/repository-path/v1"
+              },
+              "digest": {
+                "$ref": "schema://common/digest/v1"
+              },
+              "requirement_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^REQ-"
+                }
+              },
+              "acceptance_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^AC-"
+                }
+              },
+              "change_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^CHG-[0-9]{4}$"
+                }
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^TASK-"
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "task"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "requirement_refs",
+                    "acceptance_refs",
+                    "change_refs",
+                    "dependencies"
+                  ]
+                },
+                "else": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "requirement_refs"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "acceptance_refs"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "change_refs"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "dependencies"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "revision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "change",
+            "supersedes",
+            "delta"
+          ],
+          "properties": {
+            "change": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^CHG-[0-9]{4}$"
+                },
+                "path": {
+                  "$ref": "schema://common/repository-path/v1"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            },
+            "supersedes": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "digest"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^(SPEC|ARCH|WORK)-[0-9]{4}$"
+                },
+                "digest": {
+                  "$ref": "schema://common/digest/v1"
+                }
+              }
+            },
+            "delta": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "artifacts",
+                "items"
+              ],
+              "properties": {
+                "artifacts": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "added",
+                    "changed",
+                    "removed",
+                    "unchanged"
+                  ],
+                  "properties": {
+                    "added": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "path",
+                          "digest"
+                        ],
+                        "properties": {
+                          "path": {
+                            "$ref": "schema://common/repository-path/v1"
+                          },
+                          "digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "changed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "path",
+                          "old_digest",
+                          "new_digest"
+                        ],
+                        "properties": {
+                          "path": {
+                            "$ref": "schema://common/repository-path/v1"
+                          },
+                          "old_digest": {
+                            "$ref": "schema://common/digest/v1"
+                          },
+                          "new_digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "removed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "path",
+                          "digest"
+                        ],
+                        "properties": {
+                          "path": {
+                            "$ref": "schema://common/repository-path/v1"
+                          },
+                          "digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "unchanged": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "added",
+                    "changed",
+                    "removed",
+                    "unchanged"
+                  ],
+                  "properties": {
+                    "added": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "kind",
+                          "id",
+                          "digest"
+                        ],
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "requirement",
+                              "acceptance_criterion",
+                              "component",
+                              "adr",
+                              "contract",
+                              "task",
+                              "graph_entry",
+                              "document"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "changed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "kind",
+                          "id",
+                          "old_digest",
+                          "new_digest"
+                        ],
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "requirement",
+                              "acceptance_criterion",
+                              "component",
+                              "adr",
+                              "contract",
+                              "task",
+                              "graph_entry",
+                              "document"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "old_digest": {
+                            "$ref": "schema://common/digest/v1"
+                          },
+                          "new_digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "removed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "kind",
+                          "id",
+                          "digest"
+                        ],
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "requirement",
+                              "acceptance_criterion",
+                              "component",
+                              "adr",
+                              "contract",
+                              "task",
+                              "graph_entry",
+                              "document"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "digest": {
+                            "$ref": "schema://common/digest/v1"
+                          }
+                        }
+                      }
+                    },
+                    "unchanged": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "requirement": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "acceptance_criterion": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "component": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "adr": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "contract": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "task": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "graph_entry": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "document": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "allOf": [

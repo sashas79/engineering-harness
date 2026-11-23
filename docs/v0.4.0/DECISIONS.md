@@ -265,6 +265,8 @@ D-07 keeps mentor's three baselines current on approvals that nobody signed. Aft
 
 **Recommend (a)** for v0.4.0, and (c) as the next step if the residual risk is too much.
 
+**Decided: (a)** by the owner, 2026-11-23. You accept trust on first use of the anchor, as with SSH, for v0.4.0. Option (c) stays the next step if the residual risk becomes too much.
+
 **D-21 — A lost key.**
 
 **Built.** There is no recovery. A new key can be enrolled only with a signature from one already enrolled. If every enrolled key is lost the chain cannot continue, and the project's signed decisions cannot be added to; the documented way out is a new chain and re-approval. The core warns while a project has a single key.

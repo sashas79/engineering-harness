@@ -3970,7 +3970,7 @@ The same definitive contract tests are also reproduced in Appendix A below so th
 | D-17 | Reach of a change | (a) the core fixes the reach when the record is opened | 62.3 | decided |
 | D-18 | Refusal by a v0.3.0 core | (a) the release declares a core contract and drops the `bootstrap_workflow` key | FR-032, FR-059, 71.3, AC-066 | decided |
 | D-19 | Who may sign an adoption record | any enrolled identity that holds an authority in the Pack | 67.4 | confirmed by the owner, 2026-11-20 |
-| D-20 | Where trust in the keys starts | (a) signer chain, head named by every signed record, anchor accepted per machine | 68.2, 73.4, 73.7, AC-069, AC-071 | recommended option; confirmation pending |
+| D-20 | Where trust in the keys starts | (a) signer chain, head named by every signed record, anchor accepted per machine | 68.2, 73.4, 73.7, AC-069, AC-071 | confirmed by the owner, 2026-11-23 |
 | D-21 | A lost key | (a) no recovery; enrol a second key and keep it apart | 73.4 | confirmed by the owner, 2026-11-20 |
 | D-22 | A key an agent cannot use | (a) the core never opens a private key; a private key file without a passphrase is refused unless hardware-backed | 68.3, 68.4, 73.6, AC-070 | confirmed by the owner, 2026-11-20 |
 | D-23 | Typed confirmation | (a) kept: the operator types the last eight characters of the digest | 68.2, AC-063 | confirmed by the owner, 2026-11-20 |

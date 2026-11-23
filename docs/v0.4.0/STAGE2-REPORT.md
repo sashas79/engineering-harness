@@ -135,11 +135,13 @@ BRS table of decisions now marks each one confirmed:
 | D-22 | A passphrase or a hardware key is required. A key loaded into an SSH agent that signs silently is your risk. |
 | D-23 | The typed confirmation is kept. |
 
-### Still open
+### Decided 2026-11-23
 
-| Item | Question | As built |
-| --- | --- | --- |
-| D-20 | Where trust in the keys starts | Trust on first use of the signer anchor, plus a trust file per machine. The alternatives in `DECISIONS.md` are keys in the Project Pack (forces re-approval) or an anchor published outside the machine (not designed). |
+| Item | Decision |
+| --- | --- |
+| D-20 | Option (a), as built: the signer anchor is trusted on first use, and each machine keeps a trust file. You accept the SSH-style residual risk for v0.4.0. Two gaps remain: a machine that never accepted the anchor relies on a person checking the fingerprint, and an agent without a sandbox can write the trust file. Option (c), an anchor published outside the machine, is the next step if that risk becomes too much. It is not designed. |
+
+No decision is open.
 
 The 15 `INIT_*` issue codes are used by the core but not defined in the BRS text.
 
@@ -171,4 +173,4 @@ The earlier rounds (R1 to R4i) were not recorded per round. The headless Claude 
 ## 8. Left to do
 
 - The core's working notes folder `.stage2/` (logs, briefs, hand-over notes, saved documentation pages) was deleted at your request after this report; the figures above are copied from it.
-- Decide D-20 (section 5), the one decision still open.
+- If the trust-on-first-use risk of D-20 becomes too much, design option (c): an anchor published outside the machine.

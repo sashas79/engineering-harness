@@ -62,7 +62,7 @@ You answered yes to each. All four are built, tested and written into the BRS.
 
 ## 3. Verified by running it
 
-- **Core tests:** `tsc` clean; full suite 110 files and 1722 tests passed, 1 skipped (the same skip as before Stage 2). This was run after the last change.
+- **Core tests:** `tsc` clean; full suite 110 files and 1723 tests passed, 1 skipped (the same skip as before Stage 2). This was run after the last change, on 2026-11-23, with `HARNESS_V030_BINARY` naming the v0.3.0 binary; without it three more tests skip.
 - **v0.3.0 behaviour:** a differential run against the real v0.3.0 binary made 1051 comparisons with 0 differences.
 - **Release consistency:** the release manifest is regenerated and checked (70 normative files). The adapters and schemas in this repository are identical to the core's fixture, and `docs/v0.4.0/BRS.md` is identical to the core's `BRS.md`.
 - **Binaries:** compiled by bun 1.4.4 against the bun 1.4.1 runtime, the one the v0.3.0 binaries embed. With the 1.4.4 runtime the Linux and Windows binaries were over GitHub's 100 MB file limit. The runtime is almost all of the size; the core's own code is about 1.3 MB. Size in bytes and SHA-256:
@@ -140,10 +140,10 @@ BRS table of decisions now marks each one confirmed:
 | Item | Decision |
 | --- | --- |
 | D-20 | Option (a), as built: the signer anchor is trusted on first use, and each machine keeps a trust file. You accept the SSH-style residual risk for v0.4.0. Two gaps remain: a machine that never accepted the anchor relies on a person checking the fingerprint, and an agent without a sandbox can write the trust file. Option (c), an anchor published outside the machine, is the next step if that risk becomes too much. It is not designed. |
+| RUL-66 | The 15 `INIT_*` codes of `init` are listed by name in BRS Section 47, and a core test keeps the list equal to the codes in the source. The BRS defines no category, outcome or condition for them; that is left for a later release, with tests for the four codes that have none. |
+| Manifest header | `handover-manifest.json` in the core names v0.4.0 and BRS 2.0. It named v0.3.0 and BRS 1.2. |
 
 No decision is open.
-
-The 15 `INIT_*` issue codes are used by the core but not defined in the BRS text.
 
 ## 6. Tests that predate v0.4.0 and changed
 

@@ -501,6 +501,10 @@ A signature file has the name of its record followed by `.sig`, for example `evi
 
 The guard of Section 68 is raised by the CLI before any operation runs. Its codes, `GUARD_AGENT_CONTEXT`, `GUARD_NOT_INTERACTIVE`, `GUARD_CONFIRMATION_FAILED`, `GUARD_ANCHOR_UNTRUSTED`, `GUARD_ANCHOR_CHANGED`, `GUARD_KEY_UNPROTECTED` and `GUARD_SIGNING_FAILED`, have category `guard`, outcome `BLOCKED` and exit 4, and appear in the result document of the refused command. They join the three distribution-layer codes v0.3.0 already has for `approve_pending` and `reject_pending` (`DECISION_PROVENANCE_UNRESOLVED`, `DECISION_NOTHING_PENDING`, `DECISION_GATE_UNKNOWN`), which Section 47 now lists.
 
+**ADD** to the distribution-layer codes of Section 47 the codes of `init`: `INIT_GIT_FAILED`, `INIT_SOURCE_MISSING_PATH`, `INIT_SOURCE_SYMLINK`, `INIT_VERSION_MISMATCH`, `INIT_INSTALL_LOCKED`, `INIT_RELEASE_MISMATCH`, `INIT_RELEASE_UNUSABLE`, `INIT_TARGET_APPEARED`, `INIT_STAGE_EXISTS`, `INIT_IO_ERROR`, `INIT_ANSWER_INVALID`, `INIT_PROVENANCE_UNRESOLVED`, `INIT_ADAPTER_UNKNOWN`, `INIT_ADAPTER_MANIFEST_INVALID` and `INIT_ADAPTER_CONFLICT`. Owner ruling RUL-66, 2026-11-23.
+
+Section 47 also lists the codes of `init`, all prefixed `INIT_`. Twelve exist in v0.3.0; `INIT_ADAPTER_UNKNOWN`, `INIT_ADAPTER_MANIFEST_INVALID` and `INIT_ADAPTER_CONFLICT` are added for a release of core contract 2 (Section 69.5). `adopt_release` reports an `INIT_*` code when installing the target release fails as `init` does (Section 67.1). Section 47 fixes only their names. This BRS defines no category, outcome or condition for them.
+
 No existing code changes meaning.
 
 ### 2.26 Section 49 (CLI contract)

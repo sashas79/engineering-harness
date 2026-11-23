@@ -2824,6 +2824,21 @@ GUARD_SIGNING_FAILED
 DECISION_PROVENANCE_UNRESOLVED
 DECISION_NOTHING_PENDING
 DECISION_GATE_UNKNOWN
+INIT_GIT_FAILED
+INIT_SOURCE_MISSING_PATH
+INIT_SOURCE_SYMLINK
+INIT_VERSION_MISMATCH
+INIT_INSTALL_LOCKED
+INIT_RELEASE_MISMATCH
+INIT_RELEASE_UNUSABLE
+INIT_TARGET_APPEARED
+INIT_STAGE_EXISTS
+INIT_IO_ERROR
+INIT_ANSWER_INVALID
+INIT_PROVENANCE_UNRESOLVED
+INIT_ADAPTER_UNKNOWN
+INIT_ADAPTER_MANIFEST_INVALID
+INIT_ADAPTER_CONFLICT
 ```
 
 ## Conditions of the v0.4.0 codes
@@ -2872,6 +2887,8 @@ DECISION_GATE_UNKNOWN
 `ADAPTER_FILE_MISSING` and `ADAPTER_FILE_MODIFIED` have the outcome above in `check_adapters`. In every other operation they are warnings and never change a lifecycle conclusion.
 
 The guard of Section 68 is raised by the CLI before any operation runs. Its codes, `GUARD_AGENT_CONTEXT`, `GUARD_NOT_INTERACTIVE`, `GUARD_CONFIRMATION_FAILED`, `GUARD_ANCHOR_UNTRUSTED`, `GUARD_ANCHOR_CHANGED`, `GUARD_KEY_UNPROTECTED` and `GUARD_SIGNING_FAILED`, have category `guard`, outcome `BLOCKED` and exit 4, and appear in the result document of the refused command. They join the three distribution-layer codes v0.3.0 already has for `approve_pending` and `reject_pending` (`DECISION_PROVENANCE_UNRESOLVED`, `DECISION_NOTHING_PENDING`, `DECISION_GATE_UNKNOWN`), which Section 47 now lists.
+
+Section 47 also lists the codes of `init`, all prefixed `INIT_`. Twelve exist in v0.3.0; `INIT_ADAPTER_UNKNOWN`, `INIT_ADAPTER_MANIFEST_INVALID` and `INIT_ADAPTER_CONFLICT` are added for a release of core contract 2 (Section 69.5). `adopt_release` reports an `INIT_*` code when installing the target release fails as `init` does (Section 67.1). Section 47 fixes only their names. This BRS defines no category, outcome or condition for them.
 
 No existing code changes meaning.
 
@@ -3983,6 +4000,7 @@ The same definitive contract tests are also reproduced in Appendix A below so th
 | RUL-63 | Who signs at a gate | under core contract 2 the pending gate names `authority` and `approver` | 63.4 | decided by the owner, 2026-11-20 |
 | RUL-64 | Open runs and changes outside a run | a path an open run has reported is not listed under `outside_run` | 66.5 | decided by the owner, 2026-11-20 |
 | RUL-65 | A project root that does not exist | `adopt_release` refuses it first with `REPO_REQUIRED_PATH_MISSING`, before installing | 67.2 | decided by the owner, 2026-11-20 |
+| RUL-66 | The codes of `init` | the 15 `INIT_*` codes are listed by name in Section 47; no category, outcome or condition is defined for them | 47 | decided by the owner, 2026-11-23 |
 
 
 # 61. Final implementation rule

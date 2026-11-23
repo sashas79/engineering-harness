@@ -142,6 +142,7 @@ BRS table of decisions now marks each one confirmed:
 | D-20 | Option (a), as built: the signer anchor is trusted on first use, and each machine keeps a trust file. You accept the SSH-style residual risk for v0.4.0. Two gaps remain: a machine that never accepted the anchor relies on a person checking the fingerprint, and an agent without a sandbox can write the trust file. Option (c), an anchor published outside the machine, is the next step if that risk becomes too much. It is not designed. |
 | RUL-66 | The 15 `INIT_*` codes of `init` are listed by name in BRS Section 47, and a core test keeps the list equal to the codes in the source. The BRS defines no category, outcome or condition for them; that is left for a later release, with tests for the four codes that have none. |
 | Manifest header | `handover-manifest.json` in the core names v0.4.0 and BRS 2.0. It named v0.3.0 and BRS 1.2. |
+| Core documents | `VALIDATION.md` is recounted for v0.4.0: 62 schemas, 160 contract scenarios in force, 21 signature vectors, no errors. `IMPLEMENTATION.md` and `MAINTENANCE.md` carry a note that they describe v0.3.0. `MAINTENANCE-PLAN.md`, a proposal from before v0.4.0, is deleted. |
 
 No decision is open.
 
@@ -174,3 +175,6 @@ The earlier rounds (R1 to R4i) were not recorded per round. The headless Claude 
 
 - The core's working notes folder `.stage2/` (logs, briefs, hand-over notes, saved documentation pages) was deleted at your request after this report; the figures above are copied from it.
 - If the trust-on-first-use risk of D-20 becomes too much, design option (c): an anchor published outside the machine.
+- Adopt the real mentor project once the `v0.4.0` tag is published (decided 2026-11-23). The adoption, the second key and the registration of `f6e07ec` are yours to run, with the binary from this repository.
+- A source-coverage check is not built. The specification check refuses a requirement that cites an undeclared source, but accepts an authoritative source that no requirement cites, so a change request added to the Pack and then ignored still validates. The proposed rule: every source declared with `role: authoritative` is listed in the `source_refs` of at least one requirement. The full design is section 1 of the deleted `MAINTENANCE-PLAN.md`; read it in the core with `git show 3ab5a88:MAINTENANCE-PLAN.md`.
+- The two acceptance clones (`acceptance-v040`, `acceptance-v040b`) were deleted at your request on 2026-11-23. The signed records and the run they held (section 1) existed only there, mostly uncommitted, and no longer exist; this report is the record of them.

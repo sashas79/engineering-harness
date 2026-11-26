@@ -370,3 +370,10 @@ Exit status: 0 OK, 2 INCOMPLETE, 3 INVALID, 4 BLOCKED, 5 ERROR, 64 usage.
 - A hook does not run, or the agent is not stopped at a decision command
   - Cause: Codex: the project's `.codex/` layer is not trusted or the hook is not reviewed; Copilot CLI: the folder is not trusted, or the session was not started at the Git root
   - Fix: trust the project or folder; in Codex review the hook with `/hooks`; start the agent at the project root
+
+## Binary Download Workarounds (v0.4 and under)
+
+### MacOS
+
+      cp engineering-harness/harness-core-macos-arm64 harness-core
+      chmod +x harness-core
